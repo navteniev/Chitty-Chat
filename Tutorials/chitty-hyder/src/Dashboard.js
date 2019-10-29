@@ -21,6 +21,9 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 
+// use the context from store
+import {CTX} from './Store'
+
 
 // inline css
 const useStyles = makeStyles(theme => ({
@@ -63,6 +66,12 @@ export default function Dashboard(){
 
     const classes = useStyles();
 
+    // CTX store
+    const [allChats] = React.useContext(CTX);
+    console.log(allChats);
+
+    const topics = Object.keys(allChats);
+
     // some local state with the sate hook
     const [textValue, changeTextValue] = React.useState('');
 
@@ -83,7 +92,7 @@ export default function Dashboard(){
                     <div className={classes.topicsWindow}>
                         <List>
                         {
-                            ['helo','world'].map(topic =>(
+                            topics.map(topic =>(
                                 <ListItem key={topic} button>
                                 <ListItemText primary={topic} />
                                 </ListItem>
@@ -100,7 +109,7 @@ export default function Dashboard(){
                                 <div className={classes.flex} key={i}>
                                     <Chip label={chat.from} className={classes.chip}/>
 
-                                    <Typography variant='p'>{chat.msg}</Typography>
+                                    <Typography variant='body1 gutterBottom'>{chat.msg}</Typography>
                                 </div>
 
                             ))
