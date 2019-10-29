@@ -67,15 +67,24 @@ function sendChatAction(value){
 
 export default function Store(props){
 
+    const [allChats, dispatch] = React.useReducer(reducer, initState);
+
+
     if (!socket){
         socket = io(':3001');
+        socket.on('chat message', function(msg){
+            dispatch({type:'RECEIVE_MESSAGE', payload: msg});
+            console.log(msg);
+        });
     }
 
-    const [allChats] = React.useReducer(reducer, initState);
+    // const user = 'hyder';
+    const user = 'user' + Math.floor((Math.random() * 1000));
+
 
     return(
-        <CTX.Provider value = {{allChats, sendChatAction}}>
+        <CTX.Provider value = {{allChats, sendChatAction, user}}>
             {props.children}
         </CTX.Provider>
     )
-}
+}   

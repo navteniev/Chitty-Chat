@@ -67,7 +67,7 @@ export default function Dashboard(){
     const classes = useStyles();
 
     // CTX store
-    const {allChats, sendChatAction} = React.useContext(CTX);
+    const {allChats, sendChatAction, user} = React.useContext(CTX);
     const topics = Object.keys(allChats);
 
     // some local state with the sate hook
@@ -136,8 +136,8 @@ export default function Dashboard(){
                     color="primary" 
                     className={classes.button}
                     onClick = {() => {
-                        sendChatAction(textValue);
-                        changeTextValue('');
+                        sendChatAction({from: user, msg: textValue, topic: activeTopic});
+                        changeTextValue(''); 
                     }}
                     >
                         Send
