@@ -73,6 +73,7 @@ export default function Dashboard(){
     const topics = Object.keys(allChats);
 
     // some local state with the sate hook
+    const [activeTopic, changeActiveTopic] = React.useState(topics[0]);
     const [textValue, changeTextValue] = React.useState('');
 
     return (
@@ -82,7 +83,7 @@ export default function Dashboard(){
                     <h3>Chitty Chat</h3>
                 </Typography>
                 <Typography variant="h5" component="h5">
-                    Topic placeholder
+                    {activeTopic}
                 </Typography>
 
                 <div className={classes.flex}>
@@ -93,7 +94,7 @@ export default function Dashboard(){
                         <List>
                         {
                             topics.map(topic =>(
-                                <ListItem key={topic} button>
+                                <ListItem onClick={e => changeActiveTopic(e.target.innerText)} key={topic} button>
                                 <ListItemText primary={topic} />
                                 </ListItem>
                             ))
@@ -105,7 +106,7 @@ export default function Dashboard(){
                     <div className={classes.chatWindow}>
 
                         {
-                            [{from: 'user', msg:'hello'}].map((chat, i) =>(
+                            allChats[activeTopic].map((chat, i) =>(
                                 <div className={classes.flex} key={i}>
                                     <Chip label={chat.from} className={classes.chip}/>
 
