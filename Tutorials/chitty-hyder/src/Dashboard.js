@@ -63,6 +63,9 @@ export default function Dashboard(){
 
     const classes = useStyles();
 
+    // some local state with the sate hook
+    const [textValue, changeTextValue] = React.useState('');
+
     return (
         <div>
             <Paper className={classes.root}>
@@ -117,7 +120,7 @@ export default function Dashboard(){
                         label="Send a chat"
                         className={classes.chatBox}
                         value={textValue}
-                        // onChange={handleChange('name')}
+                        onChange={e => changeTextValue(e.target.value)}
                         margin="normal"
                     />
 
