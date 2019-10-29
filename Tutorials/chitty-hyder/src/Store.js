@@ -56,7 +56,14 @@ function reducer(state, action){
     }
 }
 
+
+
 let socket;
+
+function sendChatAction(value){
+    socket.emit('chat message', value);
+}
+
 
 export default function Store(props){
 
@@ -67,7 +74,7 @@ export default function Store(props){
     const [allChats] = React.useReducer(reducer, initState);
 
     return(
-        <CTX.Provider value = {{allChats}}>
+        <CTX.Provider value = {{allChats, sendChatAction}}>
             {props.children}
         </CTX.Provider>
     )
