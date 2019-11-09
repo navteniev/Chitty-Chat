@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ChatroomService } from './services/chatroom.service';
+import { UserInfoService } from './services/user-info.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,7 +12,8 @@ export class AppComponent implements OnInit {
   title = 'chitty-chat';
   message = '';
   messages: string[] = [];
-  constructor(private chatService: ChatService, db: AngularFirestore) {}
+  constructor(private chatService: ChatService, db: AngularFirestore,
+              private chatroomService: ChatroomService, private userInfoService: UserInfoService) {}
 
   ngOnInit() {
     this.chatService
@@ -19,6 +22,8 @@ export class AppComponent implements OnInit {
         this.messages.push(message);
       });
     console.log(this.messages);
+
+    this.getCurrentUserInfo();
   }
 
   sendMessage() {
@@ -32,5 +37,21 @@ export class AppComponent implements OnInit {
 
   printError(event) {
       console.error(event);
+  }
+
+  public getChatroomList() {
+    this.chatroomService.getChatroomList().subscribe(res => console.log(res));
+  }
+
+  public getChatHistory() {
+    this.chatroomService.getChatHistory('UgQEVNxekZrld8UJqtkZ').subscribe(res => console.log(res));
+  }
+
+  public getUserList() {
+    this.userInfoService.getUserList().subscribe(res => console.log(res));
+  }
+
+  public getCurrentUserInfo() {
+    this.userInfoService.getCurrentUserInfo('ph84kj5XX2MHrCK30wqPhg10gRi1').subscribe(res => console.log(res.payload.data()));
   }
 }
