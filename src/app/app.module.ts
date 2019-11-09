@@ -16,7 +16,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { RouterModule, Routes } from '@angular/router';
-
+import { ChatroomService } from './services/chatroom.service';
+import { UserInfoService } from './services/user-info.service';
 const appRoutes: Routes = [{ path: 'chatbox', component: ChatboxComponent }];
 @NgModule({
   declarations: [AppComponent, ChatboxComponent],
@@ -41,7 +42,7 @@ const appRoutes: Routes = [{ path: 'chatbox', component: ChatboxComponent }];
     RouterModule.forRoot(appRoutes, { enableTracing: true })
   ],
   exports: [],
-  providers: [ChatService],
+  providers: [ChatService, ChatroomService, UserInfoService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
