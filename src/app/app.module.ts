@@ -32,7 +32,7 @@ const appRoutes: Routes = [{ path: 'chatbox', component: ChatboxComponent }];
     HttpClientModule,
     MaterialModule,
     NgxAuthFirebaseUIModule.forRoot(environment.firebase, () => 'chitty-chat', {
-      authGuardFallbackURL: '/chatbox',
+      authGuardFallbackURL: '/',
       authGuardLoggedInURL: '/chatbox'
     }),
     AngularFireModule.initializeApp(environment.firebase, 'chitty-chat'),
