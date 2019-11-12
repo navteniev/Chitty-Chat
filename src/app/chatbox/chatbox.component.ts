@@ -4,8 +4,9 @@ import { ChatService } from '../services/chat.service';
 // import 'rxjs/add/observable/from';
 // import 'rxjs/add/operator/map';
 import * as moment from 'moment';
-import { filter, distinctUntilChanged, skipWhile, scan, throttleTime } from 'rxjs/operators';
+import { filter, distinctUntilChanged, skipWhile, scan, throttleTime, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 // import randomString from 'randomstring';
 
 @Component({
@@ -26,8 +27,25 @@ export class ChatboxComponent implements OnInit {
             name: 'John'
           }
         }
-      }
-    ]
+      },
+      {
+        value: {
+          user: {
+            name: 'alex'
+          }
+        }
+      },
+      {
+        value: {
+          user: {
+            name: 'John'
+          }
+        }
+      },
+    ],
+    me: {
+      id: 1
+    }
   };
   conversations = [
   //   {
@@ -61,15 +79,42 @@ export class ChatboxComponent implements OnInit {
       name: 'Alex'
     },
   ];
-  constructor(private chatService: ChatService, public auth: AuthService) {}
+
+  events = [
+    {
+      from: 1,
+      type: 'text',
+      body: {
+        text: 'mesgs'
+      }
+    },
+    {
+      from: 2,
+      type: 'text',
+      body: {
+        text: 'mesgs'
+      }
+    },
+  ];
+  constructor(private chatService: ChatService, public auth: AuthService, private afAuth: AngularFireAuth) {}
 
   ngOnInit() {
     this.chatService
       .getMessages()
       .subscribe((message: string) => {
         this.messages.push(message);
+        this.events.push({
+          from: 1,
+          type: 'text',
+          body: {
+            text: message
+          }
+        });
       });
     console.log(this.messages);
+    if (this.auth.user$) {
+
+    }
   }
 
   selectConversation(id: string) {
@@ -100,6 +145,7 @@ export class ChatboxComponent implements OnInit {
   sendText(text) { console.log(this.text); }
 
   sendMessage() {
+    if (this.message !== '') {
     this.chatService.sendMessage(this.message);
     console.log(this.message);
     this.message = '';
@@ -116,6 +162,14 @@ export class ChatboxComponent implements OnInit {
         const currentTime = moment().format('hh:mm:ss a');
         const messageWithTimestamp = `${currentTime}: ${message}`;
         this.messages.push(messageWithTimestamp);
+        this.events.push({
+          from: 2,
+          type: 'text',
+          body: {
+            text: messageWithTimestamp
+          }
+        });
       });
   }
+}
 }

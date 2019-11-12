@@ -13,7 +13,11 @@
             >
               <mat-icon matListIcon>forum</mat-icon>
               <p>{{ conversation.display_name }}</p>
-              <mat-icon [ngStyle]="{'float': 'right'}" (click)="deleteConversation(conversation.id)">delete</mat-icon>
+              <mat-icon
+                [ngStyle]="{ float: 'right' }"
+                (click)="deleteConversation(conversation.id)"
+                >delete</mat-icon
+              >
             </mat-list-item>
           </mat-list>
         </mat-tab>
@@ -22,13 +26,16 @@
   </mat-sidenav>
   <mat-sidenav position="end" mode="side" opened *ngIf="selectedConversation">
     <mat-card>
-      <mat-list class="conversations" >
-        <mat-list-item *ngFor="let friend of friendList; let i = index" (click)="openConversation(i)">
+      <mat-list class="conversations">
+        <mat-list-item
+          *ngFor="let friend of friendList; let i = index"
+          (click)="openConversation(i)"
+        >
           <p>{{ friend.name }}</p>
         </mat-list-item>
         <mat-list-item>
-        <i class="material-icons" (click)="auth.signOut()">
-          power_settings_new
+          <i class="material-icons" (click)="auth.signOut()">
+            power_settings_new
           </i>
         </mat-list-item>
       </mat-list>
@@ -52,19 +59,30 @@
 
     <mat-divider></mat-divider>
     <mat-list dense class="conversation-history mat-typography">
-      <!-- <mat-list-item *ngFor="let event of events; index as i" [dir]="event.from === selectedConversation.me.id ? 'rtl' : 'ltr'">
-          <img *ngIf="event.type == 'text'" matListAvatar matTooltip="{{selectedConversation.members[event.from].user.name}}" src="https://randomuser.me/api/portraits/thumb/lego/{{i}}.jpg"
-          />
-          <p *ngIf="event.type == 'text'" [dir]="'ltr'">{{event.body.text}}</p>
-          <p *ngIf="event.type == 'member:joined'" class="text-center">
-            <b>{{selectedConversation.members[event.from].user.name}}</b> has joined the conversation</p>
-        </mat-list-item> -->
-      <mat-list-item *ngFor="let message of messages">{{message}}</mat-list-item>
+      <mat-list-item
+        *ngFor="let event of events; index as i"
+        [dir]="event.from === selectedConversation.me.id ? 'rtl' : 'ltr'"
+      >
+        <img
+          *ngIf="event.type == 'text'"
+          matListAvatar
+          matTooltip="{{ selectedConversation.members[event.from].value.user.name }}"
+          src="https://randomuser.me/api/portraits/thumb/lego/{{ i }}.jpg"
+        />
+        <p *ngIf="event.type == 'text'" [dir]="'ltr'">{{ event.body.text }}</p>
+        <p *ngIf="event.type == 'member:joined'" class="text-center">
+          <b>{{ selectedConversation.members[event.from].value.user.name }}</b>
+          has joined the conversation
+        </p>
+      </mat-list-item>
+      <mat-list-item *ngFor="let message of messages">{{
+        message
+      }}</mat-list-item>
     </mat-list>
 
     <div class="conversation-input">
       <mat-divider></mat-divider>
-      <mat-form-field class="full-width">
+      <mat-form-field class="full-width" (keyup.enter)="sendMessage(message)">
         <input
           class="input__field"
           matInput
@@ -72,7 +90,12 @@
           name="message"
           [(ngModel)]="message"
         />
-        <mat-icon matSuffix (click)="sendMessage(message)" (keyup)="$event.keyCode == 13 && sendMessage()">send</mat-icon>
+        <mat-icon
+          matSuffix
+          (click)="sendMessage(message)"
+          (keyup)="$event.keyCode == 13 && sendMessage()"
+          >send</mat-icon
+        >
         <!-- <input matInput placeholder="Start chatting..." name="text" >
           <mat-icon matSuffix >send</mat-icon> -->
       </mat-form-field>
