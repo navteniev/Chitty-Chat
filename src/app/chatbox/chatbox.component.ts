@@ -120,6 +120,21 @@ export class ChatboxComponent implements OnInit {
     this.getConversations();
   }
 
+  getRandomN(n)
+  // post: returns a random integer between [0, n-1]
+  {
+    return Math.floor(Math.random() * n); 
+  }
+
+  getEmoji(msg)
+  // post: returns a random emotion
+  // in-future: this func will be used to analyze the text
+      // and get a emotion attached to it using IBM watson
+  { 
+    var emotions = ["Happy", "Sad", "Angry"];
+    return emotions[this.getRandomN(emotions.length)];
+  }
+
   updateChatHistory() {
     this.events = [];
     this.chatRoomService
