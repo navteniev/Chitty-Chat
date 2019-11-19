@@ -13,6 +13,5 @@ assignees: ''
 **What does your pull request do?**
 
 
-**What more do you believe needs to be added?**
-
+**Screenshot/GIF demonstrating your implementation**
 
