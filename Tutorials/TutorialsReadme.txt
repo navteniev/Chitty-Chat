@@ -1,1 +1,0 @@
-If you want to record any progress you did on tutorials, place them here and give a couple sentences on how you got it working
