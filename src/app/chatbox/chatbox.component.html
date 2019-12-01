@@ -1,5 +1,5 @@
 <mat-sidenav-container class="container">
-  <mat-sidenav mode="side" opened>
+  <mat-sidenav mode="side" [(opened)]="opened">
     <mat-card>
       <mat-tab-group>
         <mat-tab>
@@ -46,7 +46,7 @@
       </button>
     </mat-card>
   </mat-sidenav>
-  <mat-sidenav position="end" mode="side" opened *ngIf="selectedConversation">
+  <mat-sidenav position="end" mode="side" [(opened)]="opened" *ngIf="selectedConversation">
     <mat-card>
       <!-- right side conversation list-->
       <mat-list class="conversations">

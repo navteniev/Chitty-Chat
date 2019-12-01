@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   Input,
-  AfterViewChecked
+  AfterViewChecked,
+  HostBinding
 } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -29,7 +30,8 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
    * holds the user information from authentication
    */
   @Input() userInfo: User;
-
+  // @HostBinding() opened: boolean;
+  opened = true;
   /**
    * holds the current chatroom id for the user. has a default chatroom id
    */
@@ -196,6 +198,10 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
    */
   ngAfterViewChecked(): void {
     this.scrollBottom();
+  }
+
+  toggleSideNav() {
+    this.opened = !this.opened;
   }
 
   /**
