@@ -50,7 +50,7 @@
     <mat-card>
       <!-- right side conversation list-->
       <mat-list class="conversations">
-        <mat-list item>
+        <mat-list [ngStyle]="{'height': '520px', 'overflow': 'scroll'}" item>
             <mat-list-item *ngIf="userListEvents.length === 0">Loading...</mat-list-item>
             <mat-list-item
             *ngFor="let userListEvent of userListEvents; index as i"
