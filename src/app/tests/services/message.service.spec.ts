@@ -3,36 +3,31 @@ import { TestBed } from '@angular/core/testing';
 import { MessageService } from '../../services/message.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-//  test suite
 describe('MessageService', () => {
-  //  initialize here
+  const RESOLVED_PROMISE = Promise.resolve();
+  const REJECTED_PROMISE = Promise.reject();
+  const MESSAGE_ID = 'messageID';
+  const USER_ID = 'userID';
+  const WHEN: Date = new Date();
+  const CHATROOM_ID = 'chatRoomID';
+  const CONTENT = 'Message content text';
+  const TONE = 'angry';
+
   let serviceUnderTest: MessageService;
-  let mockObject: jasmine.SpyObj<any>;
+  let mockCollection: jasmine.SpyObj<any>;
+  let mockDocument: jasmine.SpyObj<any>;
   let firestoreServiceSpy: any;
-  const userID = 'userID';
-  const when: Date = new Date(); //  this should be probably be fixed
-  const chatRoomID = 'chatRoomID';
-  const content = 'Message content text';
-  const tone = 'angry';
 
-  //  setup before each test
-  beforeEach(() => {
-    //  create mock object and its methods
-    mockObject = jasmine.createSpyObj(
-      'MockReturnObject',
-      ['collection', 'doc', 'set', 'then']);
-    //  stub calls to return mock object
-    mockObject.doc.and.returnValue(mockObject);
-    mockObject.set.and.returnValue(mockObject);
-    mockObject.then.and.returnValue(mockObject);
-
-    //  create firestore service spy
-    firestoreServiceSpy = jasmine.createSpyObj(
+  firestoreServiceSpy = jasmine.createSpyObj(
       'FirestoreService',
       ['collection', 'createId']);
-    firestoreServiceSpy
-      .collection.and.callFake(() => mockObject);
+  mockCollection = jasmine.createSpyObj('MockCollection', ['doc']);
+  mockDocument = jasmine.createSpyObj('MockDocument', ['set', 'update']);
 
+  beforeEach(() => {
+    firestoreServiceSpy.createId.and.returnValue(MESSAGE_ID);
+    firestoreServiceSpy.collection.withArgs(jasmine.any(String)).and.returnValue(mockCollection);
+    mockCollection.doc.withArgs(jasmine.any(String)).and.returnValue(mockDocument);
     TestBed.configureTestingModule({
       providers: [
         MessageService, //  the service under test
@@ -40,18 +35,39 @@ describe('MessageService', () => {
       ]
     });
 
+    serviceUnderTest = TestBed.get(MessageService);
   });
 
-  //  a unit test
-  it('sendMessage() SHOULD return IF valid input ', () => {
-    serviceUnderTest = TestBed.get(MessageService);
-    serviceUnderTest.sendMessage(userID, when, chatRoomID, content, tone);
+  it('calling sendMessage() should resolve IF writing to database succeeds', () => {
+    mockDocument.set.withArgs(jasmine.any(Object)).and.returnValue(RESOLVED_PROMISE);
 
-    //  checking if calls were made since get
-    expect(firestoreServiceSpy.collection).toHaveBeenCalled();
-    expect(mockObject.doc).toHaveBeenCalled();
-    expect(mockObject.set).toHaveBeenCalled();
-    expect(mockObject.then).toHaveBeenCalled();
+    const sendMessagePromise = serviceUnderTest.sendMessage(USER_ID, WHEN, CHATROOM_ID, CONTENT, TONE);
+
+    sendMessagePromise
+      .then((messageID: string) => {
+        expect(messageID).toEqual(MESSAGE_ID);
+      });
+  });
+
+  it('calling sendMessage() SHOULD reject IF writing to database fails', () => {
+    mockDocument.set.withArgs(jasmine.any(Object)).and.returnValue(REJECTED_PROMISE);
+
+    const sendMessagePromise = serviceUnderTest.sendMessage(USER_ID, WHEN, CHATROOM_ID, CONTENT, TONE);
+
+    sendMessagePromise
+      .catch((e: Error) => {
+        expect(e).toBeUndefined();
+      });
+  });
+
+  it('calling updateChatTone() SHOULD resolve IF updating message succeeds', () => {
+    mockDocument.update.withArgs(jasmine.any(Object)).and.returnValue(RESOLVED_PROMISE);
+
+    const updateChatTonePromise = serviceUnderTest.updateChatTone(CHATROOM_ID, MESSAGE_ID, TONE);
+
+    updateChatTonePromise.then((data: any) => {
+      expect(data).toBeUndefined();
+    });
   });
 
 });
