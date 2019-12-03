@@ -31,7 +31,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
    */
   @Input() userInfo: User;
   // @HostBinding() opened: boolean;
-  opened = true;
+  opened = false;
   /**
    * holds the current chatroom id for the user. has a default chatroom id
    */

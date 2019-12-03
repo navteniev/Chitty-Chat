@@ -131,16 +131,20 @@
         <input
           class="input__field"
           matInput
+          #input
           placeholder="Start chatting..."
           name="message"
           [(ngModel)]="message"
+          maxlength="100 "
         />
         <mat-icon
           matSuffix
           (click)="sendMessage(message)"
           >send</mat-icon
         >
+      <mat-hint [ngStyle]="{'color': 'black'}">{{input.value?.length || 0}}/100</mat-hint>
       </mat-form-field>
+      
     </div>
   </section>
 </mat-sidenav-container>

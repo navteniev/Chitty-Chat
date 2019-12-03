@@ -133,3 +133,8 @@ section .mat-list .mat-list-avatar{
     overflow: scroll;
     height: 520px;
 }
+
+.conversation-header h2 {
+    position: relative;
+    left: 25px;
+}
