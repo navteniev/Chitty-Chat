@@ -89,7 +89,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
     }
   ];
 
-  /** 
+  /**
    * Constructor to call instances of service
    */
   constructor(
@@ -126,7 +126,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     this.scrollBottom();
   }
-  
+
   /**
    * toggles closing and opening sidenav
    * @returns void
