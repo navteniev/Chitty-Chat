@@ -111,8 +111,7 @@ describe('UserInfoService.getUserByEmail()', () => {
   const RESOLVED_PROMISE_WITH_USER_INFO = Promise.resolve([{
     data(): User { return USER_INFO; }
   }]);
-  const USER_NOT_FOUND_ERROR = new UserNotFoundError('Email not found');
-  const REJECTED_PROMISE_WITH_ERROR = Promise.reject(USER_NOT_FOUND_ERROR);
+  const RESOLVED_PROMISE_WITH_NO_USER_INFO = Promise.resolve({size: 0});
 
   let serviceUnderTest: UserInfoService;
   let mockObject: jasmine.SpyObj<any>;
@@ -141,11 +140,12 @@ describe('UserInfoService.getUserByEmail()', () => {
       expect(userInfo).toEqual(USER_INFO);
     });
   });
+
   it('calling getUserByEmail() SHOULD reject IF email does not exist', () => {
-    mockObject.get.and.returnValue(REJECTED_PROMISE_WITH_ERROR);
+    mockObject.get.and.returnValue(RESOLVED_PROMISE_WITH_NO_USER_INFO);
     serviceUnderTest = TestBed.get(UserInfoService);
     serviceUnderTest.getUserByEmail(USER_EMAIL).catch((e: UserNotFoundError) => {
-      expect(e).toEqual(USER_NOT_FOUND_ERROR);
+      expect(e).toEqual(jasmine.any(UserNotFoundError));
     });
   });
 

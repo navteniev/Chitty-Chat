@@ -37,17 +37,18 @@ export class MessageService {
   public updateChatTone(
     chatRoomID: string,
     chatID: string,
-    tone: string): void {
+    tone: string): Promise<void> {
     console.log(`updating tone of chatID: ${chatID} chatRoomID: ${chatRoomID}
                  new tone: ${tone}`);
 
-    this.db
+    return this.db
       .collection(`chatrooms/${chatRoomID}/chats`)
       .doc(chatID)
       .update({
         tone_id: tone,
       })
       .then((data) => {
+        console.log('Promise data: ', data);
         console.log('tone successfully updated!');
       });
   }
