@@ -11,7 +11,7 @@ export interface Chatuser {
     /**
      * name of user
      */
-    display_name: string;
+    displayName: string;
     /**
      * email of user
      */
@@ -19,7 +19,7 @@ export interface Chatuser {
     /**
      * holds a list of chatrooms
      */
-    friendList: string[];
+    chatroomRefs?: [{id: string}, {id: string}];
     /**
      * google avatar photo link
      */
