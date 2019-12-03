@@ -11,31 +11,17 @@
             <mat-list-item *ngIf="chatroomList.length === 0">Loading...</mat-list-item>
             <mat-list-item
               class="roomNameList"
-              *ngFor="let friend of chatroomList; let i = index"
+              *ngFor="let chatroom of chatroomList; let i = index"
               (click)="openConversation(i)"
               class="anchor"
             >
-              <p>{{ friend.name }}</p>
+              <p>{{ chatroom.name }}</p>
               <mat-divider></mat-divider>
-            </mat-list-item>
-            <!-- <mat-list-item
-              *ngFor="let conversation of conversations; let i = index;"
-              (click)="selectConversation(conversation.id, i)"
-            >
-              <mat-icon matListIcon>forum</mat-icon>
-              <p>{{ conversation.display_name }}</p>
-              <mat-icon
-                [ngStyle]="{ float: 'right' }"
-                (click)="deleteConversation(conversation.id)"
-                >delete</mat-icon
-              >
-            </mat-list-item> -->
-            <mat-list-item *ngFor="let roomname of roomName">
-                <b>{{roomname}}</b>
             </mat-list-item>
           </mat-list>
         </mat-tab>
       </mat-tab-group>
+      <!-- + create chatroom button-->
       <mat-menu #appMenu="matMenu" yPosition="above">
         <button mat-menu-item (click)="openDialog()">Create Channel</button>
         <button mat-menu-item>Private Message Individual</button>
@@ -55,7 +41,13 @@
             <mat-list-item
             *ngFor="let userListEvent of userListEvents; index as i"
             [dir]="'ltr'"
-          >
+            matTooltip="{{ userListEvent.email }}"
+            matTooltipPosition="left"
+            >
+            <img
+            matListAvatar
+            src="{{ userListEvent.photoURL }}"
+            />
             <p >{{ userListEvent.displayName }}</p>
             <p *ngIf="userListEvent.type == 'member:joined'" class="text-center">
               has joined the conversation
@@ -79,20 +71,19 @@
       </mat-list>
     </mat-card>
   </mat-sidenav>
+  <!-- selected conversation has a default value so this should not happen-->
   <section class="empty-conversation" *ngIf="!selectedConversation">
     <h1 class="mat-display-1">
       Select a conversation from the left to start chatting
     </h1>
   </section>
+  <!-- conversation header-->
   <section [class.show]="selectedConversation">
     <div class="mat-typography conversation-header">
       <h2>
         <mat-icon style="padding-right: 6px;">forum</mat-icon><b></b>
         {{ selectedConversation.name }}
       </h2>
-      <!-- <p>
-          <mat-icon>account_circle</mat-icon>
-          {{(selectedConversation.members | keys).length}} Members</p> -->
     </div>
 
     <!-- Conversation History-->
@@ -110,8 +101,8 @@
         <img
           *ngIf="event.type == 'text'"
           matListAvatar
-          matTooltip="{{ event.from === this.userInfo.uid ?  userInfo.displayName : this.selectedConversation.name}}"
-          src="https://randomuser.me/api/portraits/thumb/lego/{{ event.from.charCodeAt(0) % 10 }}.jpg"
+          [matTooltip]="getUserName(event.from)"
+          [src]="getPhoto(event.from)"
         />
         </div>
         <p *ngIf="event.type == 'text'" [dir]="'ltr'" class="dialog__box">{{ event.text }}</p>

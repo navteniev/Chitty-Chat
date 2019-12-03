@@ -16,6 +16,7 @@ import { ChatroomService } from '../services/chatroom.service';
 import { Subscription } from 'rxjs';
 import { ToneAnalyzerService } from '../services/tone-analyzer.service';
 import { MessageService } from '../services/message.service';
+import { Chatuser } from '../models/chatuser.model';
 
 describe('ChatboxComponent', () => {
   const INVALID_EMAIL = '  ';
@@ -48,9 +49,12 @@ describe('ChatboxComponent', () => {
   const EMPTY_CHAT_HISTORY = [];
   const MESSAGE = 'message content';
   const EMPTY_MESSAGE = '';
-  const USERS_IN_SELECTED_CHATROOM = [
-    {uid: 'userID1', displayName: 'user1', email: 'email1', chatroomRefs: [{id: SELECTED_CHATROOM_ID}, {id: CHATROOM2_ID}]},
-    {uid: 'userID2', displayName: 'user2', email: 'email2', chatroomRefs: [{id: CHATROOM1_ID}, {id: SELECTED_CHATROOM_ID}]}];
+  const USERS_IN_SELECTED_CHATROOM: Chatuser[] = [
+    {uid: 'userID1', displayName: 'user1', email: 'email1',
+     chatroomRefs: [{id: SELECTED_CHATROOM_ID}, {id: CHATROOM2_ID}], photoURL: 'link'},
+    {uid: 'userID2', displayName: 'user2', email: 'email2',
+     chatroomRefs: [{id: CHATROOM1_ID}, {id: SELECTED_CHATROOM_ID}], photoURL: 'link2'}
+  ];
   const TONE_ANALYZER_SERVICE_RESPONSE = {
     tones: [{score: 0.4, tone_id: 'sad'}, {score: 0.5, tone_id: 'angry'}]};
   const TONES_EMOJI_DICT = {
@@ -129,7 +133,7 @@ describe('ChatboxComponent', () => {
     fixture = TestBed.createComponent(ChatboxComponent);
     componentUnderTest = fixture.componentInstance;
     componentUnderTest.userInfo = USER_INFO;
-    componentUnderTest.selectedChatRoomID = SELECTED_CHATROOM_ID;
+    componentUnderTest.selectedConversation.id = SELECTED_CHATROOM_ID;
     componentUnderTest.userListSubscription = mockSubscription;
 
     fixture.detectChanges();
@@ -209,14 +213,29 @@ describe('ChatboxComponent', () => {
     componentUnderTest.openConversation(SELECTED_CHATROOM_INDEX);
 
     expect(componentUnderTest.selectedConversation.name).toEqual(chatroomList[SELECTED_CHATROOM_INDEX].name);
-    expect(componentUnderTest.selectedChatRoomID).toEqual(chatroomList[SELECTED_CHATROOM_INDEX].id);
+    expect(componentUnderTest.selectedConversation.id).toEqual(chatroomList[SELECTED_CHATROOM_INDEX].id);
     expect(componentUnderTest.updateChatHistory).toHaveBeenCalled();
     expect(componentUnderTest.updateUserList).toHaveBeenCalled();
   });
 
+  it('calling getUserName() SHOULD return displayName IF valid userID', () => {
+    componentUnderTest.userListEvents = USERS_IN_SELECTED_CHATROOM;
+    expect(componentUnderTest.getUserName('userID1')).toEqual(USERS_IN_SELECTED_CHATROOM[0].displayName);
+    expect(componentUnderTest.getUserName('userID2')).toEqual(USERS_IN_SELECTED_CHATROOM[1].displayName);
+    expect(componentUnderTest.getUserName('anyuserstring')).toEqual('User is not in this channel');
+  });
+
+  it('calling getPhotoURL() SHOULD return photoURL IF valid userID', () => {
+    componentUnderTest.userListEvents = USERS_IN_SELECTED_CHATROOM;
+    expect(componentUnderTest.getPhoto('userID1')).toEqual(USERS_IN_SELECTED_CHATROOM[0].photoURL);
+    expect(componentUnderTest.getPhoto('userID2')).toEqual(USERS_IN_SELECTED_CHATROOM[1].photoURL);
+    expect(componentUnderTest.getPhoto('anyuserstring')).toEqual('http://bit.ly/chitty-ghost');
+  });
+
+
   it('calling updateChatHistory() SHOULD update events IF message history is nonempty', () => {
     componentUnderTest.chatroomSubscription = mockSubscription;
-    componentUnderTest.selectedChatRoomID = SELECTED_CHATROOM_ID;
+    componentUnderTest.selectedConversation.id = SELECTED_CHATROOM_ID;
     TestBed.get(ChatroomService)
       .getUpdates.withArgs(jasmine.any(String))
       .and.returnValue(mockObservable);
@@ -234,7 +253,7 @@ describe('ChatboxComponent', () => {
 
   it('calling updateChatHistory() SHOULD return IF message history is empty', () => {
     componentUnderTest.chatroomSubscription = mockSubscription;
-    componentUnderTest.selectedChatRoomID = SELECTED_CHATROOM_ID;
+    componentUnderTest.selectedConversation.id = SELECTED_CHATROOM_ID;
     TestBed.get(ChatroomService)
       .getUpdates.withArgs(jasmine.any(String))
       .and.returnValue(mockObservable);
@@ -252,7 +271,7 @@ describe('ChatboxComponent', () => {
 
   it('calling updateUserList() SHOULD update userListEvents IF users are in selected chatroom', () => {
     componentUnderTest.userListSubscription = mockSubscription;
-    componentUnderTest.selectedChatRoomID = SELECTED_CHATROOM_ID;
+    componentUnderTest.selectedConversation.id = SELECTED_CHATROOM_ID;
     TestBed.get(UserInfoService)
       .getUserList
       .and.returnValue(mockObservable);
@@ -303,7 +322,7 @@ describe('ChatboxComponent', () => {
       .and.callFake((subscribeCallback) => {
         subscribeCallback(TONE_ANALYZER_SERVICE_RESPONSE);
       });
-    componentUnderTest.selectedChatRoomID = SELECTED_CHATROOM_ID;
+    componentUnderTest.selectedConversation.id = SELECTED_CHATROOM_ID;
 
     componentUnderTest.updateToneInFirebase(MESSAGE);
 
