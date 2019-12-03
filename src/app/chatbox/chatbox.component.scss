@@ -128,3 +128,13 @@ section .mat-list .mat-list-avatar{
     background-color: rgba(65, 65, 65, 0.781);
     display: inline-block;
 }
+
+.list__scroll {
+    overflow: scroll;
+    height: 520px;
+}
+
+.conversation-header h2 {
+    position: relative;
+    left: 25px;
+}

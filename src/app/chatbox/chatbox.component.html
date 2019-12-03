@@ -1,5 +1,5 @@
 <mat-sidenav-container class="container">
-  <mat-sidenav mode="side" opened>
+  <mat-sidenav mode="side" [(opened)]="opened">
     <mat-card>
       <mat-tab-group>
         <mat-tab>
@@ -7,7 +7,7 @@
             <mat-icon matListIcon>forum</mat-icon>
           </ng-template>
             <!-- left side conversation list-->
-          <mat-list class="conversations">
+          <mat-list class="conversations list__scroll">
             <mat-list-item *ngIf="chatroomList.length === 0">Loading...</mat-list-item>
             <mat-list-item
               class="roomNameList"
@@ -46,11 +46,11 @@
       </button>
     </mat-card>
   </mat-sidenav>
-  <mat-sidenav position="end" mode="side" opened *ngIf="selectedConversation">
+  <mat-sidenav position="end" mode="side" [(opened)]="opened" *ngIf="selectedConversation">
     <mat-card>
       <!-- right side conversation list-->
       <mat-list class="conversations">
-        <mat-list item>
+        <mat-list [ngStyle]="{'height': '520px', 'overflow': 'scroll'}" item>
             <mat-list-item *ngIf="userListEvents.length === 0">Loading...</mat-list-item>
             <mat-list-item
             *ngFor="let userListEvent of userListEvents; index as i"
@@ -66,7 +66,7 @@
             <input
               class="input__field"
               matInput
-              placeholder="addperson@example.com"
+              placeholder="Enter Email"
               name="email"
               [(ngModel)]="inputtedEmail"
             />
@@ -131,16 +131,20 @@
         <input
           class="input__field"
           matInput
+          #input
           placeholder="Start chatting..."
           name="message"
           [(ngModel)]="message"
+          maxlength="100 "
         />
         <mat-icon
           matSuffix
           (click)="sendMessage(message)"
           >send</mat-icon
         >
+      <mat-hint [ngStyle]="{'color': 'black'}">{{input.value?.length || 0}}/100</mat-hint>
       </mat-form-field>
+      
     </div>
   </section>
 </mat-sidenav-container>

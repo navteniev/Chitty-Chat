@@ -23,8 +23,9 @@
 
 <div *ngIf="auth.user$ | async as user; else login">
     <!-- {{ user | json }} -->
-    <app-header></app-header>
-    <app-chatbox [userInfo]="user"></app-chatbox>
+    <app-header [sideNav]="chatbox"></app-header>
+    <app-chatbox #chatbox [userInfo]="user"></app-chatbox>
+
 </div>
 
 <ng-template #login>
