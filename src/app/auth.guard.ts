@@ -10,6 +10,12 @@ import { tap, map, take } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
 
   constructor(private auth: AuthService, private router: Router) {}
+  /**
+   * redirects user to login
+   * @param next ActivatedRouteSnapshot, contains information about a route
+   * @param state RouterStateSnapshot, current route state
+   * @returns promise of redirection
+   */
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {

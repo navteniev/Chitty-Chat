@@ -21,10 +21,11 @@ export class CreateChannelComponent implements OnInit {
 
     @Optional() public dialogRef: MatDialogRef<CreateChannelComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-    roomName: string;
+  /** roomName holds the name of the inputed chatroom
+   */
+  roomName: string;
   /**
-   * @ignore
+   * not used
    */
   ngOnInit() {}
   /**

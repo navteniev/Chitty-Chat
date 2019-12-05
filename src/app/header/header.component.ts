@@ -8,12 +8,24 @@ import { ChatboxComponent } from '../chatbox/chatbox.component';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  /**
+   * imports all of chatbox component
+   */
   @Input() sideNav: ChatboxComponent;
+
+  /**
+   * constructor for headercomponent
+   * @param auth creates and instance of authService as public
+   */
   constructor(public auth: AuthService) { }
 
+  /** ngoninit not used
+   */
   ngOnInit() {
   }
 
+  /** toggles sidenav
+   */
   @HostListener('toggleSideNav')
   toggleSideNav() {
     this.sideNav.toggleSideNav();

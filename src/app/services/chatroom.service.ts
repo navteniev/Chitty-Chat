@@ -45,7 +45,7 @@ export class ChatroomService {
   }
 
   /**
-   * @summary add a new chatroom to database
+   * add a new chatroom to database
    * @param status indicate public or private this new chatroom will be
    * @param roomName name of this new chatroom
    * @param userList all the users can access this new chatroom
@@ -94,7 +94,7 @@ export class ChatroomService {
   }
 
   /**
-   * @summary Adds chatroom to a user's chatroomsRefs property
+   * Adds chatroom to a user's chatroomsRefs property
    *          and adds the user to the chatroom's members property
    * @param userID The ID of the user
    * @param chatroomID The ID of the chatroom

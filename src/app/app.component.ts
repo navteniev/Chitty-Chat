@@ -7,24 +7,20 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  /** title is chitty-chat
+   */
   title = 'chitty-chat';
-  // message = '';
-  // messages: string[] = [];
+
+  /**
+   * constructor of base app component
+   * @param auth instance of AuthService declared as public
+   */
   constructor(public auth: AuthService) {}
 
+  /**
+   * not used
+   */
   ngOnInit() {
-    // this.chatService
-    //   .getMessages()
-    //   .subscribe((message: string) => {
-    //     this.messages.push(message);
-    //   });
-    // console.log(this.messages);
   }
-
-
-  // sendMessage() {
-  //   this.chatService.sendMessage(this.message);
-  //   this.message = '';
-  // }
 
 }
