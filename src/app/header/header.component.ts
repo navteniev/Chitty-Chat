@@ -2,14 +2,16 @@ import { Component, OnInit, Input, HostBinding, HostListener } from '@angular/co
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatboxComponent } from '../chatbox/chatbox.component';
 
+/**
+ * Header Component is a header bar where the chittychat logo, sidenav toggle and logout menu is at
+ */
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  /**
-   * imports all of chatbox component
+  /** imports all of chatbox component
    */
   @Input() sideNav: ChatboxComponent;
 
@@ -24,7 +26,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  /** toggles sidenav
+  /** toggles to close/open sidenav
    */
   @HostListener('toggleSideNav')
   toggleSideNav() {
