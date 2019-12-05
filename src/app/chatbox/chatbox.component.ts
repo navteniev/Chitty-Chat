@@ -30,7 +30,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
   /** holds the user information from authentication
    */
   @Input() userInfo: User;
-  /* @HostBinding() opened: boolean;
+  /** calls HostBinding() opened: boolean;
    */
   opened = false;
 
@@ -363,7 +363,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
    * @returns photo string
    */
   getPhoto(uid: string) {
-    let name = 'http://bit.ly/chitty-ghost';
+    let name = 'https://bit.ly/chitty-ghost';
     this.userListEvents.forEach((user: Chatuser) => {
       if (user.uid === uid) {
         name = user.photoURL;
