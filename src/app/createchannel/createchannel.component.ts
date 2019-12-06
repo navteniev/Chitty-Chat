@@ -4,6 +4,9 @@ import { DialogData } from 'src/app/models/createchat.model';
 import { ChatroomService } from '../services/chatroom.service';
 import { UserInfoService } from '../services/user-info.service';
 
+/**
+ * createchannel is an user interface that pops up when clicking the + to add a chatroom
+ */
 @Component({
   selector: 'app-createchannel',
   templateUrl: './createchannel.component.html',
@@ -21,10 +24,11 @@ export class CreateChannelComponent implements OnInit {
 
     @Optional() public dialogRef: MatDialogRef<CreateChannelComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-    roomName: string;
+  /** roomName holds the name of the inputed chatroom
+   */
+  roomName: string;
   /**
-   * @ignore
+   * not used
    */
   ngOnInit() {}
   /**

@@ -19,7 +19,9 @@ import { Subscription } from 'rxjs';
 import {ToneAnalyzerService} from '../services/tone-analyzer.service';
 import { isNull } from 'util';
 
-
+/**
+ * chatbox is where the message and message input is along with the sidenavs of chatrooms and userlist
+ */
 @Component({
   selector: 'app-chatbox',
   templateUrl: './chatbox.component.html',
@@ -30,7 +32,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
   /** holds the user information from authentication
    */
   @Input() userInfo: User;
-  /* @HostBinding() opened: boolean;
+  /** calls HostBinding() opened: boolean;
    */
   opened = false;
 
@@ -363,7 +365,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
    * @returns photo string
    */
   getPhoto(uid: string) {
-    let name = 'http://bit.ly/chitty-ghost';
+    let name = 'https://bit.ly/chitty-ghost';
     this.userListEvents.forEach((user: Chatuser) => {
       if (user.uid === uid) {
         name = user.photoURL;

@@ -11,9 +11,18 @@ import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
+    /** holds User observable
+     */
     user$: Observable<User>;
 
+    /**
+     * sets user if logged in or not upon initializing service
+     * sends a document reference of user id in database to user
+     * or null if not logged in
+     * @param afAuth angular fire authentication
+     * @param afs angular firestore
+     * @param router used in sign out to redirect to sign in page
+     */
     constructor(
         private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
@@ -33,6 +42,10 @@ export class AuthService {
       );
      }
 
+     /**
+      * signs in the user
+      * @returns function call to addNewUserToFirebase with the google authentication
+      */
      async googleSignin() {
       const provider = new auth.GoogleAuthProvider();
       const credential = await this.afAuth.auth.signInWithPopup(provider);
@@ -40,7 +53,7 @@ export class AuthService {
     }
 
     /**
-     * @summary Adds new users to the database
+     * Adds new users to the database
      * @param user User info provided by google after oauth signin
      */
     public addNewUserToFirebase(user: firebase.User): Promise<void> {
@@ -66,6 +79,11 @@ export class AuthService {
           });
       });
     }
+
+    /**
+     * waits until signs out promise returns true to navagate to the google sign in page
+     * @returns a promise of 'true' if navigated, 'false' when not navigates and reject when error occurs
+     */
     async signOut() {
       await this.afAuth.auth.signOut();
       this.router.navigate(['/']);

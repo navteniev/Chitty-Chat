@@ -229,7 +229,7 @@ describe('ChatboxComponent', () => {
     componentUnderTest.userListEvents = USERS_IN_SELECTED_CHATROOM;
     expect(componentUnderTest.getPhoto('userID1')).toEqual(USERS_IN_SELECTED_CHATROOM[0].photoURL);
     expect(componentUnderTest.getPhoto('userID2')).toEqual(USERS_IN_SELECTED_CHATROOM[1].photoURL);
-    expect(componentUnderTest.getPhoto('anyuserstring')).toEqual('http://bit.ly/chitty-ghost');
+    expect(componentUnderTest.getPhoto('anyuserstring')).toEqual('https://bit.ly/chitty-ghost');
   });
 
 
