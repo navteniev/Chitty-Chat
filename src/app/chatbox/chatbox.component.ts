@@ -75,7 +75,8 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
       from: '1',
       type: 'text',
       text: 'mesages',
-      tone_id: 'empty'
+      tone_id: 'empty',
+      when: new Date()
     }
   ];
 
@@ -147,6 +148,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
       this.chatroomSubscription.unsubscribe();
     }
     this.events = [];
+    this.getChatHistory();
     this.chatroomSubscription = this.chatRoomService
       .getUpdates(this.selectedConversation.id)
       .subscribe((message: any) => {
@@ -155,10 +157,45 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
             from: element.user,
             type: 'text',
             text: element.content,
-            tone_id: element.tone_id
+            tone_id: element.tone_id,
+            when: new Date(element.when)
           });
         });
       });
+  }
+
+
+  /**
+   * load more chats
+   * @returns void
+   */
+  getMoreChats() {
+    this.getChatHistory(this.events[0].when);
+  }
+
+  /**
+   * get the current room chat history and store them in this.event
+   * @param startAfter a timestamp, chats you want to get before this timestamp
+   * @param limit the amount of chats want to get
+   * @returns void
+   */
+  async getChatHistory(startAfter: Date = new Date(), limit: number = 20) {
+    await this.chatRoomService.getLimitedChats(this.selectedConversation.id, startAfter, limit)
+    .then(docs => {
+      docs.forEach(doc => {
+        const data = doc.data();
+        this.events.push({
+          from: data.user,
+          type: 'text',
+          text: data.content,
+          tone_id: data.tone_id,
+          when: data.when
+        });
+      });
+    });
+    this.events.sort((a: any, b: any) => {
+      return a.when.seconds - b.when.seconds;
+    });
   }
 
   /**

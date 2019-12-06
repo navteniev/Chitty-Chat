@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { MaterialModule } from '../modules/material-module';
 import { ChatboxComponent } from './chatbox.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +19,10 @@ import { MessageService } from '../services/message.service';
 import { Chatuser } from '../models/chatuser.model';
 
 describe('ChatboxComponent', () => {
+  const RESOLVED_PROMISE_WITH_CHATS: Promise<any> = Promise.resolve(
+    [{data() {return {user: 'user', context: 'context', tone_id: 'tone_id', when: new Date('2011-04-11T10:20:30Z')}; }},
+     {data() {return {user: 'user', context: 'context', tone_id: 'tone_id', when: new Date()}; }}]
+    );
   const INVALID_EMAIL = '  ';
   const VALID_EMAIL_REGISTERED = 'Registered@gmail.com';
   const CHATROOM1_ID = 'chatroomID1';
@@ -82,7 +86,7 @@ describe('ChatboxComponent', () => {
     ['getUserByEmail', 'getUserList']);
   chatroomServiceSpy = jasmine.createSpyObj(
     'ChatroomService',
-    ['addUserToChatroom', 'getUpdates']);
+    ['addUserToChatroom', 'getUpdates', 'getLimitedChats']);
   toneAnalyzerServiceSpy = jasmine.createSpyObj(
     'ToneAnalyzerService', ['toneAnalyze']);
   messageServiceSpy = jasmine.createSpyObj(
@@ -330,6 +334,21 @@ describe('ChatboxComponent', () => {
     expect(mockObservable.subscribe).toHaveBeenCalled();
     expect(messageServiceSpy.sendMessage).toHaveBeenCalledWith(USER_INFO.uid, jasmine.any(Date), SELECTED_CHATROOM_ID, MESSAGE, 'angry');
   });
+
+  it ('calling getMoreChats() SHOULD call getChatHistory()', () => {
+    spyOn(componentUnderTest, 'getChatHistory');
+    componentUnderTest.getMoreChats();
+
+    expect(componentUnderTest.getChatHistory).toHaveBeenCalledWith(jasmine.any(Date));
+  });
+
+  it ('calling getChatHistory() SHOULD store sorted chats in this.events', fakeAsync(() => {
+    chatroomServiceSpy.getLimitedChats.and.returnValue(RESOLVED_PROMISE_WITH_CHATS);
+    componentUnderTest.events = [];
+    componentUnderTest.getChatHistory();
+    tick();
+    expect(componentUnderTest.events[0].when.getTime()).toBeLessThan(componentUnderTest.events[1].when.getTime());
+  }));
 
   function createChatroomDocumentRef(id: string, roomName: string) {
     return {

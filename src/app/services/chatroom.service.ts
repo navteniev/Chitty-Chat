@@ -45,6 +45,21 @@ export class ChatroomService {
   }
 
   /**
+   * get limit amount of chat history of a chatroom
+   * @param roomID id of the chatroom
+   * @param startAfter a timestamp, chats you want to get before this timestamp
+   * @param limit the amount of chats want to get
+   * @returns a promise
+   */
+  public getLimitedChats(roomID: string, startAfter: Date, limit: number): Promise<any> {
+    return this.db.collection(`chatrooms/${roomID}/chats`)
+            .ref.orderBy('when', 'desc')
+            .startAfter(startAfter)
+            .limit(limit)
+            .get();
+  }
+
+  /**
    * add a new chatroom to database
    * @param status indicate public or private this new chatroom will be
    * @param roomName name of this new chatroom
@@ -78,9 +93,10 @@ export class ChatroomService {
    * @param chatRoomID id of the chatroom
    * @returns an observable object that contains id and metadata of chats (sorted by their timestamp)
    */
-  public getUpdates(chatRoomID: string): Observable<any> {
+  public getUpdates(chatRoomID: string, now: Date = new Date()): Observable<any> {
     return this.db
-      .collection(`chatrooms/${chatRoomID}/chats`)
+      .collection(`chatrooms/${chatRoomID}/chats`,
+                  ref => ref.where('when', '>', now))
       .stateChanges(['added'])
       .pipe(
         map(actions => actions.map(a => {

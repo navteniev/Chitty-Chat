@@ -20,7 +20,7 @@ describe('ChatroomService.getUpdates()', () => {
   mockCollection = jasmine.createSpyObj('MockCollection', ['stateChanges']);
 
   firestoreServiceSpy
-    .collection.withArgs(jasmine.any(String))
+    .collection
     .and.returnValue(mockCollection);
   mockCollection
     .stateChanges.withArgs(jasmine.any(Array))
@@ -42,7 +42,7 @@ describe('ChatroomService.getUpdates()', () => {
         expect(msg[0].when.seconds < msg[1].when.seconds);
       }
     });
-    expect(firestoreServiceSpy.collection).toHaveBeenCalledWith(COLLECTION_PATH);
+    expect(firestoreServiceSpy.collection).toHaveBeenCalled();
     expect(mockCollection.stateChanges).toHaveBeenCalledWith(STATE_CHANGES);
   });
 
@@ -406,13 +406,47 @@ describe('ChatroomService.delChatroomRefInUsers()', () => {
       expect(batchSpy.commit).toHaveBeenCalled();
     });
   });
+});
 
-  it('calling delChatroomRefInUsers() should reject IF invalid input', () => {
-    mockDocumentReference.get.and.returnValue(REJECT_PROMISE);
+describe('ChatroomService.getLimitedChats()', () => {
+  const CHATROOM_ID = 'chatroomID';
+  const STARTAFTER = new Date();
+  const LIMIT = 20;
+  const RESOVLED_PROMISE = Promise.resolve();
+
+  let serviceUnderTest: ChatroomService;
+  let firestoreServiceSpy: jasmine.SpyObj<any>;
+  let mockCollectionReference: jasmine.SpyObj<any>;
+
+  beforeEach(() => {
+    mockCollectionReference = jasmine.createSpyObj('MockCollectionReference',
+                                                  ['orderBy', 'startAfter', 'limit', 'get']);
+    mockCollectionReference.orderBy.withArgs(jasmine.any(String), jasmine.any(String)).and.returnValue(mockCollectionReference);
+    mockCollectionReference.startAfter.withArgs(jasmine.any(Date)).and.returnValue(mockCollectionReference);
+    mockCollectionReference.limit.withArgs(jasmine.any(Number)).and.returnValue(mockCollectionReference);
+    firestoreServiceSpy = jasmine.createSpyObj('FirestoreService', ['collection', 'ref']);
+    firestoreServiceSpy.collection.withArgs(jasmine.any(String)).and.returnValue(firestoreServiceSpy);
+    firestoreServiceSpy.ref = mockCollectionReference;
+
+    TestBed.configureTestingModule({
+      providers: [
+        ChatroomService,
+        { provide: AngularFirestore, useValue: firestoreServiceSpy}
+      ]
+    });
+
+  });
+
+  it('calling getLimitedChats() should return IF valid input', () => {
+    mockCollectionReference.get.and.returnValue(RESOVLED_PROMISE);
     serviceUnderTest = TestBed.get(ChatroomService);
-    serviceUnderTest.delChatroomRefInUsers(jasmine.any(firestore.DocumentReference))
-    .catch(e => {
-      expect(e).toEqual('failed!');
+    serviceUnderTest.getLimitedChats(CHATROOM_ID, STARTAFTER, LIMIT)
+    .then(res => {
+      expect(firestoreServiceSpy.collection).toHaveBeenCalled();
+      expect(mockCollectionReference.get).toHaveBeenCalled();
+      expect(mockCollectionReference.startAfter).toHaveBeenCalled();
+      expect(mockCollectionReference.orderBy).toHaveBeenCalled();
+      expect(mockCollectionReference.limit).toHaveBeenCalled();
     });
   });
 });
