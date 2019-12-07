@@ -27,7 +27,7 @@ import { isNull } from 'util';
   templateUrl: './chatbox.component.html',
   styleUrls: ['./chatbox.component.scss']
 })
-export class ChatboxComponent implements OnInit, AfterViewChecked {
+export class ChatboxComponent implements OnInit {
 
   /** holds the user information from authentication
    */
@@ -126,9 +126,9 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
    *
    * @returns void
    */
-  ngAfterViewChecked(): void {
-    this.scrollBottom();
-  }
+  // ngAfterViewChecked(): void {
+  //   this.scrollBottom();
+  // }
 
   /**
    * toggles closing and opening sidenav
@@ -238,7 +238,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
     this.selectedConversation.id = this.chatroomList[index].id;
     this.updateChatHistory();
     this.updateUserList();
-    this.scrollBottom();
+    setTimeout(() => this.scrollBottom(), 500);
   }
 
   /**
@@ -284,6 +284,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
     if (this.message !== '') {
       this.updateToneInFirebase(message);
       this.message = '';
+      this.scrollBottom();
     }
   }
 
