@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit {
    * constructor for headercomponent
    * @param auth creates and instance of authService as public
    */
-  constructor(public auth: AuthService) { }
+  constructor(public auth: AuthService) {
+  }
 
   /** ngoninit not used
    */

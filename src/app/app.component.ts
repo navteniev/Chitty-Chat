@@ -13,6 +13,17 @@ export class AppComponent implements OnInit {
   /** title is chitty-chat
    */
   title = 'chitty-chat';
+  // Initialize isDarkTheme to false
+  isDarkTheme: boolean = false;
+
+  // changeTheme function to toggle switch between themes
+  changeTheme(): void {
+    if (this.isDarkTheme) {
+       this.isDarkTheme = false;
+    } else {
+       this.isDarkTheme = true;
+    }
+ }
 
   /**
    * constructor of base app component
