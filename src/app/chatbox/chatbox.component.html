@@ -1,58 +1,73 @@
 <mat-sidenav-container class="container">
-  <mat-sidenav mode="side" [(opened)]="opened">
-    <mat-card>
-      <mat-tab-group>
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon matListIcon>forum</mat-icon>
-          </ng-template>
-            <!-- left side conversation list-->
-          <mat-list class="conversations list__scroll">
-            <mat-list-item *ngIf="chatroomList.length === 0">Loading...</mat-list-item>
-            <mat-list-item
-              class="roomNameList"
-              *ngFor="let chatroom of chatroomList; let i = index"
-              (click)="openConversation(i)"
-              class="anchor"
-            >
-              <p>{{ chatroom.name }}</p>
-              <mat-divider></mat-divider>
+    <mat-sidenav mode="side" [(opened)]="opened">
+      <mat-card>
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon matListIcon>forum</mat-icon>
+            </ng-template>
+              <!-- left side conversation list-->
+            <mat-list class="conversations list__scroll">
+              <mat-list-item *ngIf="chatroomList.length === 0">Loading...</mat-list-item>
+              <mat-list-item
+                class="roomNameList"
+                *ngFor="let chatroom of chatroomList; let i = index"
+                (click)="openConversation(i)"
+                class="anchor"
+              >
+                <p>{{ chatroom.name }}</p>
+                <mat-divider></mat-divider>
+              </mat-list-item>
+            </mat-list>
+          </mat-tab>
+        </mat-tab-group>
+        <!-- + create chatroom button-->
+        <mat-menu #appMenu="matMenu" yPosition="above">
+          <button mat-menu-item (click)="openDialog()">Create Channel</button>
+          <button mat-menu-item>Private Message Individual</button>
+        </mat-menu>
+          
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="appMenu" style="position: absolute; bottom: 20px; right: 15px;">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card>
+    </mat-sidenav>
+    <mat-sidenav position="end" mode="side" [(opened)]="opened" *ngIf="selectedConversation">
+      <mat-card>
+        <!-- right side conversation list-->
+        <mat-list class="conversations">
+          <mat-list [ngStyle]="{'height': '520px', 'overflow': 'scroll'}" item>
+              <mat-list-item *ngIf="userListEvents.length === 0">Loading...</mat-list-item>
+              <mat-list-item
+              *ngFor="let userListEvent of userListEvents; index as i"
+              [dir]="'ltr'"
+              matTooltip="{{ userListEvent.email }}"
+              matTooltipPosition="left"
+              >
+              <img
+              matListAvatar
+              src="{{ userListEvent.photoURL }}"
+              />
+              <p >{{ userListEvent.displayName }}</p>
+              <p *ngIf="userListEvent.type == 'member:joined'" class="text-center">
+                has joined the conversation
+              </p>
             </mat-list-item>
           </mat-list>
-        </mat-tab>
-      </mat-tab-group>
-      <!-- + create chatroom button-->
-      <mat-menu #appMenu="matMenu" yPosition="above">
-        <button mat-menu-item (click)="openDialog()">Create Channel</button>
-        <button mat-menu-item>Private Message Individual</button>
-      </mat-menu>
-        
-      <button mat-raised-button color="primary" [matMenuTriggerFor]="appMenu" style="position: absolute; bottom: 20px; right: 15px;">
-        <mat-icon>add</mat-icon>
-      </button>
-    </mat-card>
-  </mat-sidenav>
-  <mat-sidenav position="end" mode="side" [(opened)]="opened" *ngIf="selectedConversation">
-    <mat-card>
-      <!-- right side conversation list-->
-      <mat-list class="conversations">
-        <mat-list [ngStyle]="{'height': '520px', 'overflow': 'scroll'}" item>
-            <mat-list-item *ngIf="userListEvents.length === 0">Loading...</mat-list-item>
-            <mat-list-item
-            *ngFor="let userListEvent of userListEvents; index as i"
-            [dir]="'ltr'"
-            matTooltip="{{ userListEvent.email }}"
-            matTooltipPosition="left"
-            >
-            <img
-            matListAvatar
-            src="{{ userListEvent.photoURL }}"
-            />
-            <p >{{ userListEvent.displayName }}</p>
-            <p *ngIf="userListEvent.type == 'member:joined'" class="text-center">
-              has joined the conversation
-            </p>
-          </mat-list-item>
+          <mat-form-field class="full-width" (keyup.enter)="addUserByEmail(inputtedEmail)">
+              <input
+                class="input__field"
+                matInput
+                placeholder="Enter Email"
+                name="email"
+                [(ngModel)]="inputtedEmail"
+              />
+              <mat-icon
+                matSuffix
+                (click)="addUserByEmail(inputtedEmail)"
+                >person_add</mat-icon
+              >
+            </mat-form-field>
         </mat-list>
         <mat-form-field class="full-width" (keyup.enter)="addUserByEmail(inputtedEmail)">
             <input
@@ -111,31 +126,57 @@
           has joined the conversation
         </p>
       </div>
-      </mat-list-item>
-
-    </mat-list>
-
-    <!-- Chat input box-->
-    <div class="conversation-input">
+  
+      <!-- Conversation History-->
       <mat-divider></mat-divider>
-      <mat-form-field class="full-width" (keyup.enter)="sendMessage(message)">
-        <input
-          class="input__field"
-          matInput
-          #input
-          placeholder="Start chatting..."
-          name="message"
-          [(ngModel)]="message"
-          maxlength="100 "
-        />
-        <mat-icon
-          matSuffix
-          (click)="sendMessage(message)"
-          >send</mat-icon
+      <mat-list id="scrollMe" dense class="conversation-history mat-typography">
+  
+        <mat-list-item
+        
+        [ngStyle]="{'word-break': 'break-word', 'overflow': 'hidden', 'display': 'flex', 'align-items': 'flex-start'}"
+        *ngFor="let event of events; index as i"
+          [dir]="event.from === this.userInfo.uid ? 'rtl' : 'ltr'"
         >
-      <mat-hint [ngStyle]="{'color': 'black'}">{{input.value?.length || 0}}/100</mat-hint>
-      </mat-form-field>
-      
-    </div>
-  </section>
-</mat-sidenav-container>
+        <div class="messages">
+          <div [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'justify-content': 'center', 'align-items': 'center'}">
+          <img
+            *ngIf="event.type == 'text'"
+            matListAvatar
+            [matTooltip]="getUserName(event.from)"
+            [src]="getPhoto(event.from)"
+          />
+          </div>
+          <p *ngIf="event.type == 'text'" [dir]="'ltr'" class="dialog__box">{{ event.text }}</p>
+          <div class="emoji" [ngStyle]="{'position': 'relative'}" [innerHtml]="updateEmoji(event.tone_id)"></div>
+          <p *ngIf="event.type == 'member:joined'" class="text-center">
+            has joined the conversation
+          </p>
+        </div>
+        </mat-list-item>
+  
+      </mat-list>
+  
+      <!-- Chat input box-->
+      <div class="conversation-input">
+        <mat-divider></mat-divider>
+        <mat-form-field class="full-width" (keyup.enter)="sendMessage(message)">
+          <input
+            class="input__field"
+            matInput
+            #input
+            placeholder="Start chatting..."
+            name="message"
+            [(ngModel)]="message"
+            maxlength="100 "
+          />
+          <mat-icon
+            matSuffix
+            (click)="sendMessage(message)"
+            >send</mat-icon
+          >
+        <mat-hint [ngStyle]="{'color': 'black'}">{{input.value?.length || 0}}/100</mat-hint>
+        </mat-form-field>
+        
+      </div>
+    </section>
+  </mat-sidenav-container>

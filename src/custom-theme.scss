@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+
+// have to load a single css file for Angular Material in the app
+@include mat-core();
+
+// Definining the default theme
+$primary: mat-palette($mat-deep-orange);
+$accent: mat-palette($mat-pink, A200, A100, A400);
+$warn: mat-palette($mat-red);
+$theme: mat-light-theme($primary, $accent, $warn);
+
+// Need to include the default theme style.
+@include angular-material-theme($theme);
+
+// Our dark theme
+.dark-theme {
+  color: $light-primary-text;
+  $dark-primary: mat-palette($mat-indigo);
+  $dark-accent: mat-palette($mat-amber, A400, A100, A700);
+  $dark-warn: mat-palette($mat-red);
+  $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+  @include angular-material-theme($dark-theme);
+}
