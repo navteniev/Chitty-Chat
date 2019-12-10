@@ -21,6 +21,16 @@ export class HeaderComponent implements OnInit {
    */
   constructor(public auth: AuthService) { }
 
+  isDarkTheme: boolean = false;
+
+  // changeTheme function to toggle switch between themes
+  changeTheme(): void {
+    if (this.isDarkTheme) {
+       this.isDarkTheme = false;
+    } else {
+       this.isDarkTheme = true;
+    }
+ }
   /** ngoninit not used
    */
   ngOnInit() {
