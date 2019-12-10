@@ -124,9 +124,7 @@ export class ChatroomService {
    */
   public deleteChatroom(chatroomID: string): Promise<any> {
     const chatroomRef = this.db.doc(`chatrooms/${chatroomID}`).ref;
-    return new Promise((resolve, reject) => {
-      // delele all sub documents inside this chatroom
-      chatroomRef.collection('chats').get()
+    return chatroomRef.collection('chats').get()
       .then(docs => {
         const batch = this.db.firestore.batch();
         docs.forEach(doc => {
@@ -137,9 +135,7 @@ export class ChatroomService {
       // delete chatroom
       .then(() => chatroomRef.delete())
       // delete all chatroom refs in users
-      .then(() => this.delChatroomRefInUsers(chatroomRef))
-      .catch(e => reject('failed!'));
-    });
+      .then(() => this.delChatroomRefInUsers(chatroomRef));
   }
 
   /**
