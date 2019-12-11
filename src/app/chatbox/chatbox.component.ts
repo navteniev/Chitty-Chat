@@ -283,6 +283,10 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  /**
+   * Creates a ConfirmationDialogComponent model
+   * @returns void
+   */
   openDeleteChatroomDialog(): void {
     this.dialog.open(ConfirmationDialogComponent, {
       data: {
