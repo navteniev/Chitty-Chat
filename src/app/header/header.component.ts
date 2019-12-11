@@ -4,6 +4,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ChatboxComponent } from '../chatbox/chatbox.component';
 import { ProfilePageComponent } from '../profile-page/profile-page.component';
 
+import { UserInfoService } from '../services/user-info.service';
+import { ChatroomService } from '../services/chatroom.service';
+import { User } from '../models/user.model';
+
+
 /**
  * Header Component is a header bar where the chittychat logo, sidenav toggle and logout menu is at
  */
@@ -17,6 +22,10 @@ export class HeaderComponent implements OnInit {
    */
   @Input() sideNav: ChatboxComponent;
 
+  /** holds the user information from authentication
+   */
+  @Input() userInfo: User;
+
   /**
    * constructor for headercomponent
    * @param auth creates and instance of authService as public
@@ -27,7 +36,12 @@ export class HeaderComponent implements OnInit {
 
 
   openProfile(){
-    this.dialog.open(ProfilePageComponent, {data: {name: "sakine"}});
+    this.dialog.open(ProfilePageComponent, {data: 
+      { name: this.userInfo.displayName,
+        email: this.userInfo.email,
+        photoURL: this.userInfo.photoURL,
+        status: this.userInfo.status
+    }});
   }
 
   /** ngoninit not used
