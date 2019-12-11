@@ -67,7 +67,7 @@ export class UserInfoService {
    * @returns Promise<string>
    */
   public updateUser(userID: string, status: string): Promise<string> {
-    return this.db.collection(`users`).doc(userID).update(status)
+    return this.db.collection(`users`).doc(userID).update({status})
     .then(() =>  'success' );
   }
 }
