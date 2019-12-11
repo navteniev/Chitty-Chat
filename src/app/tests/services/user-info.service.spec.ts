@@ -175,11 +175,12 @@ describe('UserInfoService.updateUser()', () => {
   it('calling updateUser() should return success', () => {
 
     service.updateUser('userID', 'off')
-    .then(res => expect(res).toEqual('success'));
-
-    expect(firestoreServiceSpy.collection).toHaveBeenCalled();
-    expect(firestoreServiceSpy.doc).toHaveBeenCalled();
-    expect(firestoreServiceSpy.update).toHaveBeenCalled();
+    .then(res => {
+      expect(res).toEqual('success');
+      expect(firestoreServiceSpy.collection).toHaveBeenCalled();
+      expect(firestoreServiceSpy.doc).toHaveBeenCalled();
+      expect(firestoreServiceSpy.update).toHaveBeenCalled();
+    });
 
   });
 });
