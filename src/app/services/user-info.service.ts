@@ -59,4 +59,15 @@ export class UserInfoService {
       });
     });
   }
+
+  /**
+   * update user status
+   * @param userID user id
+   * @param status user status on/off
+   * @returns Promise<string>
+   */
+  public updateUser(userID: string, status: string): Promise<string> {
+    return this.db.collection(`users`).doc(userID).update({status})
+    .then(() =>  'success' );
+  }
 }

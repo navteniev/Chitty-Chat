@@ -88,7 +88,8 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
       displayName: 'name',
       email: 'example',
       chatroomRefs: [{id: 'SELECTED_CHATROOM_ID'}, {id: 'CHATROOM2_ID'}],
-      photoURL: 'link'
+      photoURL: 'link',
+      status: 'off'
     }
   ];
 
@@ -116,7 +117,9 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
         this.openConversation(0);
       }
     });
-    console.log(this.userInfo);
+    if (this.userInfo) {
+      this.userInfoService.updateUser(this.userInfo.uid, 'on');
+    }
   }
 
   /**
@@ -407,12 +410,19 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
         users.forEach((userInfo: any) => {
           userInfo.chatroomRefs.forEach((chatRef: any) => {
             if (chatRef.id === this.selectedConversation.id) {
+              let color = '';
+              if (userInfo.status === 'off') {
+                color = '#ff3300';
+              } else {
+                color = '#80ff80';
+              }
               this.userListEvents.push({
                 uid: userInfo.uid,
                 displayName: userInfo.displayName,
                 email: userInfo.email,
                 chatroomRefs: userInfo.chatroomRefs,
-                photoURL: userInfo.photoURL
+                photoURL: userInfo.photoURL,
+                status: color
               });
             }
           });
