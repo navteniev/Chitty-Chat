@@ -20,7 +20,7 @@
   </li>
 </ul> -->
 <!-- <app-chatbox></app-chatbox> -->
-<div class="dark-theme">
+<div [ngClass]="{'dark-theme': isDarkTheme | async }">
   <div class="mat-app-background">
     <div *ngIf="auth.user$ | async as user; else login">
       <!-- {{ user | json }} -->
@@ -35,7 +35,8 @@
         <button mat-raised-button color="warn" (click)="auth.googleSignin()">Login with Google</button>
       </div>
     </ng-template>
-
-    <router-outlet></router-outlet>
+    <div class="mat-app-background">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
