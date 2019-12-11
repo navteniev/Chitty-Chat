@@ -24,4 +24,6 @@ export interface Chatuser {
      * google avatar photo link
      */
     photoURL: string;
+
+    status: string;
 }

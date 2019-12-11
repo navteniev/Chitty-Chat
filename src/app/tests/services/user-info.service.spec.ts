@@ -150,3 +150,37 @@ describe('UserInfoService.getUserByEmail()', () => {
   });
 
 });
+
+
+describe('UserInfoService.updateUser()', () => {
+
+  const RESOLVED_PROMISE = Promise.resolve('success');
+
+  const firestoreServiceSpy = jasmine.createSpyObj(
+    'AngularFirestore', ['collection', 'doc', 'update']);
+
+  beforeEach(() => {
+    firestoreServiceSpy.collection.and.returnValue(firestoreServiceSpy);
+    firestoreServiceSpy.doc.and.returnValue(firestoreServiceSpy);
+    firestoreServiceSpy.update.and.returnValue(RESOLVED_PROMISE);
+    TestBed.configureTestingModule({
+    providers: [
+        UserInfoService,
+        { provide: AngularFirestore, useValue: firestoreServiceSpy }
+      ],
+  });
+    service = TestBed.get(UserInfoService);
+});
+
+  it('calling updateUser() should return success', () => {
+
+    service.updateUser('userID', 'off')
+    .then(res => {
+      expect(res).toEqual('success');
+      expect(firestoreServiceSpy.collection).toHaveBeenCalled();
+      expect(firestoreServiceSpy.doc).toHaveBeenCalled();
+      expect(firestoreServiceSpy.update).toHaveBeenCalled();
+    });
+
+  });
+});

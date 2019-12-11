@@ -148,3 +148,12 @@ section .mat-list .mat-list-avatar{
     position: relative;
     left: -7px;
 }
+
+.online-indicator {
+  margin-left: 2px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
