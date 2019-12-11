@@ -3,6 +3,7 @@ import { AuthService } from './services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserInfoService } from './services/user-info.service';
 import { ChatroomService } from './services/chatroom.service';
+import { Observable } from 'rxjs';
 
 /**
  * App component is the base page for logging in
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
    * constructor of base app component
    * @param auth instance of AuthService declared as public
    */
-
+  isDarkTheme: Observable<boolean>;
   constructor(public auth: AuthService,
               private chatroomService: ChatroomService,
               private angularFireAuth: AngularFireAuth,
