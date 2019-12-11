@@ -23,7 +23,7 @@ export interface User {
     /**
      * stores users online status
      */
-    status?:string;
+    status?: string;
     /**
      * placeholder for data
      */
