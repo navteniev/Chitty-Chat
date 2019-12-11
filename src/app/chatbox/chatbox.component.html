@@ -114,7 +114,7 @@
         />
         </div>
         <p *ngIf="event.type == 'text'" [dir]="'ltr'" class="dialog__box">{{ event.text }}</p>
-        <div [ngClass]="{'emoji__right': 'event.from !== this.userInfo.uid', 'emoji__left': 'event.from === this.userInfo.uid'}" [ngStyle]="{'position': 'relative'}" [innerHtml]="updateEmoji(event.tone_id)"></div>
+        <div class="emoji" [ngStyle]="{'position': 'relative'}" [innerHtml]="updateEmoji(event.tone_id)"></div>
         <p *ngIf="event.type == 'member:joined'" class="text-center">
           has joined the conversation
         </p>
