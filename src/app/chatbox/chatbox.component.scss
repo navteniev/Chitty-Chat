@@ -139,6 +139,16 @@ section .mat-list .mat-list-avatar{
     left: 25px;
 }
 
+.emoji__left {
+    position: relative;
+    right: -13px;
+}
+
+.emoji__right {
+    position: relative;
+    left: -7px;
+}
+
 .online-indicator {
   margin-left: 2px;
   height: 12px;
@@ -146,3 +156,4 @@ section .mat-list .mat-list-avatar{
   border-radius: 50%;
   display: inline-block;
 }
+
