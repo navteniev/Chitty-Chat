@@ -63,10 +63,11 @@ export class UserInfoService {
   /**
    * update user status
    * @param userID user id
-   * @param status1 user status on/off
+   * @param status user status on/off
+   * @returns Promise<string>
    */
-  public updateUser(userID: string, status1: string) {
-    this.db.collection(`users`).doc(userID).update({status: status1})
-    .then(() => {console.log('success'); });
+  public updateUser(userID: string, status: string): Promise<string> {
+    return this.db.collection(`users`).doc(userID).update(status)
+    .then(() =>  'success' );
   }
 }
