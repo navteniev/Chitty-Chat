@@ -69,62 +69,28 @@
               >
             </mat-form-field>
         </mat-list>
-        <mat-form-field class="full-width" (keyup.enter)="addUserByEmail(inputtedEmail)">
-            <input
-              class="input__field"
-              matInput
-              placeholder="Enter Email"
-              name="email"
-              [(ngModel)]="inputtedEmail"
-            />
-            <mat-icon
-              matSuffix
-              (click)="addUserByEmail(inputtedEmail)"
-              >person_add</mat-icon
-            >
-          </mat-form-field>
-      </mat-list>
-    </mat-card>
-  </mat-sidenav>
-  <!-- selected conversation has a default value so this should not happen-->
-  <section class="empty-conversation" *ngIf="!selectedConversation">
-    <h1 class="mat-display-1">
-      Select a conversation from the left to start chatting
-    </h1>
-  </section>
-  <!-- conversation header-->
-  <section [class.show]="selectedConversation">
-    <div class="mat-typography conversation-header">
-      <h2>
-        <mat-icon style="padding-right: 6px;">forum</mat-icon><b></b>
-        {{ selectedConversation.name }}
-      </h2>
-    </div>
-
-    <!-- Conversation History-->
-    <mat-divider></mat-divider>
-    <mat-list id="scrollMe" dense class="conversation-history mat-typography">
-
-      <mat-list-item
-      
-      [ngStyle]="{'word-break': 'break-word', 'overflow': 'hidden', 'display': 'flex', 'align-items': 'flex-start'}"
-      *ngFor="let event of events; index as i"
-        [dir]="event.from === this.userInfo.uid ? 'rtl' : 'ltr'"
-      >
-      <div class="messages">
-        <div [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'justify-content': 'center', 'align-items': 'center'}">
-        <img
-          *ngIf="event.type == 'text'"
-          matListAvatar
-          [matTooltip]="getUserName(event.from)"
-          [src]="getPhoto(event.from)"
-        />
-        </div>
-        <p *ngIf="event.type == 'text'" [dir]="'ltr'" class="dialog__box">{{ event.text }}</p>
-        <div class="emoji" [ngStyle]="{'position': 'relative'}" [innerHtml]="updateEmoji(event.tone_id)"></div>
-        <p *ngIf="event.type == 'member:joined'" class="text-center">
-          has joined the conversation
-        </p>
+      </mat-card>
+    </mat-sidenav>
+    <!-- selected conversation has a default value so this should not happen-->
+    <section class="empty-conversation" *ngIf="!selectedConversation">
+      <h1 class="mat-display-1">
+        Select a conversation from the left to start chatting
+      </h1>
+    </section>
+    <!-- conversation header-->
+    <section [class.show]="selectedConversation">
+      <div class="mat-typography conversation-header">
+        <h2>
+          <mat-icon style="padding-right: 6px;">forum</mat-icon><b></b>
+          <div>{{ selectedConversation.name }}</div>
+            <mat-menu #roomOptions yPosition="above">
+              <button mat-menu-item (click)="openDeleteChatroomDialog()">Delete</button>
+            </mat-menu>
+  
+            <button mat-icon-button [matMenuTriggerFor]="roomOptions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+        </h2>
       </div>
   
       <!-- Conversation History-->
@@ -174,7 +140,7 @@
             (click)="sendMessage(message)"
             >send</mat-icon
           >
-        <mat-hint [ngStyle]="{'color': 'black'}">{{input.value?.length || 0}}/100</mat-hint>
+        <mat-hint>{{input.value?.length || 0}}/100</mat-hint>
         </mat-form-field>
         
       </div>

@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
 import { CreateChannelComponent } from './createchannel/createchannel.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 const config = {
   apiKey: 'AIzaSyD-9drCjUDfcRit3vaqTkY_8PVZCOsfiiA',
@@ -58,4 +59,11 @@ const config = {
   bootstrap: [AppComponent],
   entryComponents: [CreateChannelComponent]
 })
+
 export class AppModule { }
+
+export class DarkTheme {
+  constructor(overlayContainer: OverlayContainer) {
+    overlayContainer.getContainerElement().classList.add('dark-theme');
+  }
+}

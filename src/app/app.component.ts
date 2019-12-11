@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { Observable } from 'rxjs';
+import { ChatroomService } from './services/chatroom.service';
 
 /**
  * App component is the base page for logging in
@@ -13,17 +15,21 @@ export class AppComponent implements OnInit {
   /** title is chitty-chat
    */
   title = 'chitty-chat';
-
+  isDarkTheme: Observable<boolean>;
   /**
    * constructor of base app component
    * @param auth instance of AuthService declared as public
    */
-  constructor(public auth: AuthService) {}
-
+  constructor(public auth: AuthService, private chatroomService: ChatroomService) {
+    this.isDarkTheme = this.chatroomService.isDarkTheme;
+  }
   /**
    * not used
    */
   ngOnInit() {
+    this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
-
+  toggleDarkTheme(checked: boolean) {
+    this.chatroomService.setDarkTheme(checked);
+  }
 }

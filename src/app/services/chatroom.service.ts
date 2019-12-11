@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { map, take} from 'rxjs/operators';
 import { firestore } from 'firebase';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +15,15 @@ export class ChatroomService {
    * get all chatroom id and metadata
    * @returns an observable object that contains id and metadata of each chatroom
    */
+
+  private darkTheme: Subject<boolean> = new Subject<boolean>();
+  isDarkTheme = this.darkTheme.asObservable();
+
+  setDarkTheme(isDarkTheme: boolean) {
+    console.log("TEST");
+    this.darkTheme.next(isDarkTheme);
+  }
+
   public getChatroomList() {
     return this.db.collection('chatrooms').snapshotChanges()
             .pipe(map(actions =>
