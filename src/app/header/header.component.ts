@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
    * @param auth creates and instance of authService as public
    */
 
-  constructor(public auth: AuthService) { }
+  constructor(public auth: AuthService, public chatroomService: ChatroomService) { }
 
   /** ngoninit not used
    */
@@ -35,5 +35,7 @@ export class HeaderComponent implements OnInit {
   toggleSideNav() {
     this.sideNav.toggleSideNav();
     }
+    toggleDarkTheme(checked: boolean) {
+      this.chatroomService.setDarkTheme(checked);
+    }
   }
-}
