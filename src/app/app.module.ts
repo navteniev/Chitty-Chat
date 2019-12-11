@@ -19,6 +19,7 @@ import { HeaderComponent } from './header/header.component';
 import { CreateChannelComponent } from './createchannel/createchannel.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 const config = {
   apiKey: 'AIzaSyD-9drCjUDfcRit3vaqTkY_8PVZCOsfiiA',
@@ -37,7 +38,8 @@ const config = {
     LoginComponent,
     HeaderComponent,
     CreateChannelComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +60,10 @@ const config = {
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [CreateChannelComponent, ProfilePageComponent]
+  entryComponents: [
+    CreateChannelComponent,
+    ProfilePageComponent,
+    ConfirmationDialogComponent
+  ]
 })
 export class AppModule { }

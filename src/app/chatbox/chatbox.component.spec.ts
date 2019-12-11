@@ -51,9 +51,9 @@ describe('ChatboxComponent', () => {
   const EMPTY_MESSAGE = '';
   const USERS_IN_SELECTED_CHATROOM: Chatuser[] = [
     {uid: 'userID1', displayName: 'user1', email: 'email1',
-     chatroomRefs: [{id: SELECTED_CHATROOM_ID}, {id: CHATROOM2_ID}], photoURL: 'link'},
+     chatroomRefs: [{id: SELECTED_CHATROOM_ID}, {id: CHATROOM2_ID}], photoURL: 'link', status: 'off'},
     {uid: 'userID2', displayName: 'user2', email: 'email2',
-     chatroomRefs: [{id: CHATROOM1_ID}, {id: SELECTED_CHATROOM_ID}], photoURL: 'link2'}
+     chatroomRefs: [{id: CHATROOM1_ID}, {id: SELECTED_CHATROOM_ID}], photoURL: 'link2', status: 'off'}
   ];
   const TONE_ANALYZER_SERVICE_RESPONSE = {
     tones: [{score: 0.4, tone_id: 'sad'}, {score: 0.5, tone_id: 'angry'}]};
@@ -79,7 +79,7 @@ describe('ChatboxComponent', () => {
 
   userInfoServiceSpy = jasmine.createSpyObj(
     'UserInfoService',
-    ['getUserByEmail', 'getUserList']);
+    ['getUserByEmail', 'getUserList', 'updateUser']);
   chatroomServiceSpy = jasmine.createSpyObj(
     'ChatroomService',
     ['addUserToChatroom', 'getUpdates']);

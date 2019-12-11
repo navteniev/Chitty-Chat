@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserInfoService } from '../../services/user-info.service';
 
 describe('AuthService', () => {
   const mockCredential = [{
@@ -40,7 +41,7 @@ describe('AuthService', () => {
       ['auth', 'authState']);
     mockAuth = jasmine.createSpyObj(
       'authSpy',
-      ['signInWithPopup', 'signOut']);
+      ['signInWithPopup', 'signOut', 'currentUser']);
     firestoreServiceSpy = jasmine.createSpyObj(
       'FirestoreSpy',
       ['doc']);
@@ -65,6 +66,7 @@ describe('AuthService', () => {
 
     angularFireAuthSpy.auth = mockAuth;
     mockAuth.signInWithPopup.and.returnValue(mockCredential[0]);
+    mockAuth.currentUser = {uid: 'uid'};
 
     firestoreServiceSpy.doc.and.returnValue(mockDocument);
 
@@ -76,7 +78,7 @@ describe('AuthService', () => {
 
     TestBed.configureTestingModule({
     providers: [
-      AuthService,
+      AuthService, UserInfoService,
       { provide: Router, useValue: routerSpy},
       { provide: AngularFirestore, useValue: firestoreServiceSpy },
       { provide: AngularFireAuth, useValue: angularFireAuthSpy }
@@ -139,8 +141,10 @@ describe('AuthService', () => {
 
   it('signOut() should redirect router', fakeAsync(() => {
     serviceUnderTest = TestBed.get(AuthService);
-
+    const userInfoService = TestBed.get(UserInfoService);
+    spyOn(userInfoService, 'updateUser');
     serviceUnderTest.signOut();
+    tick();
     expect(mockAuth.signOut).toHaveBeenCalled();
     tick();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);

@@ -8,6 +8,7 @@ import { AngularFirestore, AngularFirestoreDocument, DocumentReference, Document
 
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { UserInfoService } from '../services/user-info.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -26,7 +27,8 @@ export class AuthService {
     constructor(
         private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
-        private router: Router
+        private router: Router,
+        private userInfoService: UserInfoService
     ) {
       this.user$ = this.afAuth.authState.pipe(
         switchMap(user => {
@@ -72,7 +74,8 @@ export class AuthService {
                 email: user.email,
                 displayName: user.displayName,
                 photoURL: user.photoURL,
-                chatroomRefs: [chatroom1, chatroom2, chatroom3]
+                chatroomRefs: [chatroom1, chatroom2, chatroom3],
+                status: 'on'
               };
               return userRef.set(data, { merge: true });
             }
@@ -85,6 +88,7 @@ export class AuthService {
      * @returns a promise of 'true' if navigated, 'false' when not navigates and reject when error occurs
      */
     async signOut() {
+      this.userInfoService.updateUser(this.afAuth.auth.currentUser.uid, 'off');
       await this.afAuth.auth.signOut();
       this.router.navigate(['/']);
     }

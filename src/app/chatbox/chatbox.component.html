@@ -26,7 +26,7 @@
         <button mat-menu-item (click)="openDialog()">Create Channel</button>
         <button mat-menu-item>Private Message Individual</button>
       </mat-menu>
-        
+
       <button mat-raised-button color="primary" [matMenuTriggerFor]="appMenu" style="position: absolute; bottom: 20px; right: 15px;">
         <mat-icon>add</mat-icon>
       </button>
@@ -52,6 +52,7 @@
             <p *ngIf="userListEvent.type == 'member:joined'" class="text-center">
               has joined the conversation
             </p>
+            <span class="online-indicator" [style.background-color]='userListEvent.status'></span>
           </mat-list-item>
         </mat-list>
         <mat-form-field class="full-width" (keyup.enter)="addUserByEmail(inputtedEmail)">
@@ -82,7 +83,14 @@
     <div class="mat-typography conversation-header">
       <h2>
         <mat-icon style="padding-right: 6px;">forum</mat-icon><b></b>
-        {{ selectedConversation.name }}
+        <div>{{ selectedConversation.name }}</div>
+          <mat-menu #roomOptions yPosition="above">
+            <button mat-menu-item (click)="openDeleteChatroomDialog()">Delete</button>
+          </mat-menu>
+
+          <button mat-icon-button [matMenuTriggerFor]="roomOptions">
+            <mat-icon>more_vert</mat-icon>
+          </button>
       </h2>
     </div>
 
@@ -91,7 +99,7 @@
     <mat-list id="scrollMe" dense class="conversation-history mat-typography">
 
       <mat-list-item
-      
+
       [ngStyle]="{'word-break': 'break-word', 'overflow': 'hidden', 'display': 'flex', 'align-items': 'flex-start'}"
       *ngFor="let event of events; index as i"
         [dir]="event.from === this.userInfo.uid ? 'rtl' : 'ltr'"
@@ -135,7 +143,7 @@
         >
       <mat-hint [ngStyle]="{'color': 'black'}">{{input.value?.length || 0}}/100</mat-hint>
       </mat-form-field>
-      
+
     </div>
   </section>
 </mat-sidenav-container>

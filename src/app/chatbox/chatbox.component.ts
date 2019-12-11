@@ -14,6 +14,7 @@ import { User } from '../models/user.model';
 import { Chat } from '../models/chat.model';
 import { Chatuser } from '../models/chatuser.model';
 import { CreateChannelComponent } from '../createchannel/createchannel.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {ToneAnalyzerService} from '../services/tone-analyzer.service';
@@ -87,7 +88,8 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
       displayName: 'name',
       email: 'example',
       chatroomRefs: [{id: 'SELECTED_CHATROOM_ID'}, {id: 'CHATROOM2_ID'}],
-      photoURL: 'link'
+      photoURL: 'link',
+      status: 'off'
     }
   ];
 
@@ -115,7 +117,9 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
         this.openConversation(0);
       }
     });
-    console.log(this.userInfo);
+    if (this.userInfo) {
+      this.userInfoService.updateUser(this.userInfo.uid, 'on');
+    }
   }
 
   /**
@@ -283,6 +287,21 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
   }
 
   /**
+   * Creates a ConfirmationDialogComponent model
+   * @returns void
+   */
+  openDeleteChatroomDialog(): void {
+    this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: `Delete ${this.selectedConversation.name}?`,
+        prompt: `Are you sure you want to delete ${this.selectedConversation.name}?`,
+        chatroomID: this.selectedConversation.id,
+        callback: this.ngOnInit.bind(this)
+      }
+    });
+  }
+
+  /**
    * Updates the component's chatroomList property
    *          with the user's chatrooms
    * @returns A Promise that resolves if the component's
@@ -391,12 +410,19 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
         users.forEach((userInfo: any) => {
           userInfo.chatroomRefs.forEach((chatRef: any) => {
             if (chatRef.id === this.selectedConversation.id) {
+              let color = '';
+              if (userInfo.status === 'off') {
+                color = '#ff3300';
+              } else {
+                color = '#80ff80';
+              }
               this.userListEvents.push({
                 uid: userInfo.uid,
                 displayName: userInfo.displayName,
                 email: userInfo.email,
                 chatroomRefs: userInfo.chatroomRefs,
-                photoURL: userInfo.photoURL
+                photoURL: userInfo.photoURL,
+                status: color
               });
             }
           });
