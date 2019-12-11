@@ -14,6 +14,7 @@ import { User } from '../models/user.model';
 import { Chat } from '../models/chat.model';
 import { Chatuser } from '../models/chatuser.model';
 import { CreateChannelComponent } from '../createchannel/createchannel.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {ToneAnalyzerService} from '../services/tone-analyzer.service';
@@ -279,6 +280,21 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
       console.log('The dialog was closed');
       this.selectedConversation.name = result;
       console.log(result);
+    });
+  }
+
+  /**
+   * Creates a ConfirmationDialogComponent model
+   * @returns void
+   */
+  openDeleteChatroomDialog(): void {
+    this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: `Delete ${this.selectedConversation.name}?`,
+        prompt: `Are you sure you want to delete ${this.selectedConversation.name}?`,
+        chatroomID: this.selectedConversation.id,
+        callback: this.ngOnInit.bind(this)
+      }
     });
   }
 
