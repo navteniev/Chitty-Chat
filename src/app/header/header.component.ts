@@ -21,14 +21,12 @@ export class HeaderComponent implements OnInit {
    * constructor for headercomponent
    * @param auth creates and instance of authService as public
    */
-  isDarkTheme: Observable<boolean>;
 
-  constructor(public auth: AuthService, private chatroomService: ChatroomService) { }
+  constructor(public auth: AuthService) { }
 
   /** ngoninit not used
    */
   ngOnInit() {
-    this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
 
   /** toggles to close/open sidenav
@@ -36,10 +34,6 @@ export class HeaderComponent implements OnInit {
   @HostListener('toggleSideNav')
   toggleSideNav() {
     this.sideNav.toggleSideNav();
-  }
-
-  toggleDarkTheme(checked: boolean) {
-    this.chatroomService.setDarkTheme(checked);
-    console.log();
+    }
   }
 }
