@@ -14,22 +14,20 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  /** title is chitty-chat
+   */
+  title = 'chitty-chat';
+  isDarkTheme: Observable<boolean>;
   /**
    * constructor of base app component
    * @param auth instance of AuthService declared as public
    */
-  isDarkTheme: Observable<boolean>;
   constructor(public auth: AuthService,
               private chatroomService: ChatroomService,
               private angularFireAuth: AngularFireAuth,
               private userInfoService: UserInfoService) {
     this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
-
-  /** title is chitty-chat
-   */
-  title = 'chitty-chat';
-
 
   /** will be called when the browser close or tab close */
   @HostListener('window:beforeunload', [ '$event' ])
