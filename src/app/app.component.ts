@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
    * @param auth instance of AuthService declared as public
    */
   constructor(public auth: AuthService, private chatroomService: ChatroomService) {
-    this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
   /**
    * not used
@@ -29,7 +28,5 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
-  toggleDarkTheme(checked: boolean) {
-    this.chatroomService.setDarkTheme(checked);
-  }
+
 }
