@@ -9,6 +9,7 @@
           <mat-icon matListIcon class="icon" [ngStyle]="{'color': 'white'}">account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
+          <button mat-button (click)="openProfile()">My Profile</button>
           <i class="material-icons button__logout" (click)="auth.signOut()">
             power_settings_new
           </i>

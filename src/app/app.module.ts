@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
 import { CreateChannelComponent } from './createchannel/createchannel.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 const config = {
   apiKey: 'AIzaSyD-9drCjUDfcRit3vaqTkY_8PVZCOsfiiA',
@@ -35,7 +36,8 @@ const config = {
     ChatboxComponent,
     LoginComponent,
     HeaderComponent,
-    CreateChannelComponent
+    CreateChannelComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +58,6 @@ const config = {
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [CreateChannelComponent]
+  entryComponents: [CreateChannelComponent, ProfilePageComponent]
 })
 export class AppModule { }
