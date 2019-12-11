@@ -170,7 +170,7 @@ export class ChatboxComponent implements OnInit {
    * @returns void
    */
   getMoreChats() {
-    this.getChatHistory(this.events[0].when);
+    return this.getChatHistory(this.events[0].when);
   }
 
   /**
@@ -196,6 +196,7 @@ export class ChatboxComponent implements OnInit {
     this.events.sort((a: any, b: any) => {
       return a.when.seconds - b.when.seconds;
     });
+    return Promise.resolve();
   }
 
   /**
@@ -440,6 +441,22 @@ export class ChatboxComponent implements OnInit {
           });
         });
       });
+  }
+
+  test(e): void {
+    const heightBefore = e.target.scrollHeight;
+    if (e.target.scrollTop === 0) {
+      
+      this.getMoreChats().then(() => {
+        setTimeout(() => {
+          const heightAfter = e.target.scrollHeight;
+          console.log(heightBefore, heightAfter)
+          e.target.scrollTop = heightAfter - heightBefore;
+        }, 100)
+        
+        
+      })
+    }
   }
 
   /**

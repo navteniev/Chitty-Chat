@@ -88,10 +88,7 @@
 
     <!-- Conversation History-->
     <mat-divider></mat-divider>
-    <mat-list id="scrollMe" dense class="conversation-history mat-typography">
-      <button mat-raised-button (click)='getMoreChats()'>
-        load more
-      </button>
+    <mat-list id="scrollMe" dense class="conversation-history mat-typography" (scroll)='test($event)'>
       <mat-list-item
 
       [ngStyle]="{'word-break': 'break-word', 'overflow': 'hidden', 'display': 'flex', 'align-items': 'flex-start'}"
