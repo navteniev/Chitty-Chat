@@ -21,12 +21,13 @@ export class HeaderComponent implements OnInit {
    * constructor for headercomponent
    * @param auth creates and instance of authService as public
    */
-
+  isDarkTheme: Observable<boolean>;
   constructor(public auth: AuthService, public chatroomService: ChatroomService) { }
 
   /** ngoninit not used
    */
   ngOnInit() {
+    this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
 
   /** toggles to close/open sidenav
