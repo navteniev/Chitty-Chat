@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, HostBinding, HostListener } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatboxComponent } from '../chatbox/chatbox.component';
+import { Observable } from 'rxjs';
+import { ChatroomService } from '../services/chatroom.service';
 
 /**
  * Header Component is a header bar where the chittychat logo, sidenav toggle and logout menu is at
@@ -19,11 +21,13 @@ export class HeaderComponent implements OnInit {
    * constructor for headercomponent
    * @param auth creates and instance of authService as public
    */
-  constructor(public auth: AuthService) { }
+  isDarkTheme: Observable<boolean>;
+  constructor(public auth: AuthService, public chatroomService: ChatroomService) { }
 
   /** ngoninit not used
    */
   ngOnInit() {
+    this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
 
   /** toggles to close/open sidenav
@@ -31,6 +35,8 @@ export class HeaderComponent implements OnInit {
   @HostListener('toggleSideNav')
   toggleSideNav() {
     this.sideNav.toggleSideNav();
+    }
+    toggleDarkTheme(checked: boolean) {
+      this.chatroomService.setDarkTheme(checked);
+    }
   }
-
-}
