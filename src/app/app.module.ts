@@ -19,6 +19,7 @@ import { HeaderComponent } from './header/header.component';
 import { CreateChannelComponent } from './createchannel/createchannel.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 const config = {
   apiKey: 'AIzaSyD-9drCjUDfcRit3vaqTkY_8PVZCOsfiiA',
@@ -63,4 +64,11 @@ const config = {
     ConfirmationDialogComponent
   ]
 })
+
 export class AppModule { }
+
+export class DarkTheme {
+  constructor(overlayContainer: OverlayContainer) {
+    overlayContainer.getContainerElement().classList.add('dark-theme');
+  }
+}
