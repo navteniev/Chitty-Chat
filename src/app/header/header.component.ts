@@ -2,12 +2,11 @@ import { Component, OnInit, Input, HostBinding, HostListener } from '@angular/co
 import { MatDialog } from '@angular/material';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatboxComponent } from '../chatbox/chatbox.component';
-import { ProfilePageComponent } from '../profile-page/profile-page.component';
-
-import { UserInfoService } from '../services/user-info.service';
+import { Observable } from 'rxjs';
 import { ChatroomService } from '../services/chatroom.service';
+import { ProfilePageComponent } from '../profile-page/profile-page.component';
 import { User } from '../models/user.model';
-
+import { UserInfoService } from '../services/user-info.service';
 
 /**
  * Header Component is a header bar where the chittychat logo, sidenav toggle and logout menu is at
@@ -30,10 +29,10 @@ export class HeaderComponent implements OnInit {
    * constructor for headercomponent
    * @param auth creates and instance of authService as public
    */
-  constructor(
-    public auth: AuthService,
-    public dialog: MatDialog) { }
-
+  isDarkTheme: Observable<boolean>;
+  constructor(public auth: AuthService,
+              public chatroomService: ChatroomService,
+              public dialog: MatDialog) { }
 
   openProfile() {
     this.dialog.open(ProfilePageComponent, {data:
@@ -47,6 +46,7 @@ export class HeaderComponent implements OnInit {
   /** ngoninit not used
    */
   ngOnInit() {
+    this.isDarkTheme = this.chatroomService.isDarkTheme;
   }
 
   /** toggles to close/open sidenav
@@ -54,6 +54,8 @@ export class HeaderComponent implements OnInit {
   @HostListener('toggleSideNav')
   toggleSideNav() {
     this.sideNav.toggleSideNav();
+    }
+    toggleDarkTheme(checked: boolean) {
+      this.chatroomService.setDarkTheme(checked);
+    }
   }
-
-}

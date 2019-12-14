@@ -1,26 +1,19 @@
-<mat-toolbar color="black">
+<mat-toolbar color="primary">
     <button mat-icon-button>
-      <mat-icon (click)="toggleSideNav()">compare_arrows</mat-icon>
+      <mat-icon (click)="toggleSideNav()">aspect_ratio</mat-icon>
     </button>
-    <img src="assets/images/logo.png" width="220px" height="40px">
+    <h3>ChittyChat</h3>
     <div style="position:absolute; right:0">
-      <div class="menu-spacer">
-        <button [matMenuTriggerFor]="menu" style="border: 0px; padding-right: 20px; background-color: #212121;">
-          <mat-icon matListIcon class="icon" [ngStyle]="{'color': 'white'}">account_circle</mat-icon>
+      <div class="menu-spacer" color="primary">
+        <button color="primary" style="border-radius: 10px;" [matMenuTriggerFor]="menu">
+          <mat-icon mat-icon-button class="icon" color="warn">account_circle</mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
+        <mat-slide-toggle [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)">Dark theme</mat-slide-toggle>
+        <mat-menu #menu="matMenu" color="black">
           <button mat-button (click)="openProfile()">My Profile</button>
           <i class="material-icons button__logout" (click)="auth.signOut()">
             power_settings_new
           </i>
-          <!-- <button mat-menu-item disabled>
-              <mat-icon>voicemail</mat-icon>
-              <span>thing2</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>announcement</mat-icon>
-              <span>thing3</span>
-            </button> -->
         </mat-menu>
         <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
         <form action="">
