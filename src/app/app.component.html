@@ -20,18 +20,23 @@
   </li>
 </ul> -->
 <!-- <app-chatbox></app-chatbox> -->
+<div [ngClass]="{'dark-theme': isDarkTheme | async }">
+  <div class="mat-app-background">
+    <div *ngIf="auth.user$ | async as user; else login">
+      <!-- {{ user | json }} -->
+      <app-header [sideNav]="chatbox"></app-header>
+      <app-chatbox #chatbox [userInfo]="user"></app-chatbox>
 
-<div *ngIf="auth.user$ | async as user; else login">
-    <!-- {{ user | json }} -->
-    <app-header [sideNav]="chatbox"></app-header>
-    <app-chatbox #chatbox [userInfo]="user"></app-chatbox>
+    </div>
 
+    <ng-template #login>
+      <div class="button__at">
+        <mat-card-header class="login__title">Welcome to Chitty Chat!</mat-card-header>
+        <button mat-raised-button color="warn" (click)="auth.googleSignin()">Login with Google</button>
+      </div>
+    </ng-template>
+    <div class="mat-app-background">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
-
-<ng-template #login>
-    <div class="button__at">
-    <mat-card-header class="login__title">Welcome to Chitty Chat!</mat-card-header>
-  <button mat-raised-button color="warn" (click)="auth.googleSignin()">Login with Google</button>
-</div>
-</ng-template>
-<router-outlet></router-outlet>
