@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
 import { CreateChannelComponent } from './createchannel/createchannel.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
@@ -38,6 +39,7 @@ const config = {
     LoginComponent,
     HeaderComponent,
     CreateChannelComponent,
+    ProfilePageComponent,
     ConfirmationDialogComponent
   ],
   imports: [
@@ -61,6 +63,7 @@ const config = {
   bootstrap: [AppComponent],
   entryComponents: [
     CreateChannelComponent,
+    ProfilePageComponent,
     ConfirmationDialogComponent
   ]
 })
