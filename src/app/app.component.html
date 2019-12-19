@@ -24,9 +24,8 @@
   <div class="mat-app-background">
     <div *ngIf="auth.user$ | async as user; else login">
       <!-- {{ user | json }} -->
-      <app-header [sideNav]="chatbox"></app-header>
+      <app-header [sideNav]="chatbox" [userInfo]="user"></app-header>
       <app-chatbox #chatbox [userInfo]="user"></app-chatbox>
-
     </div>
 
     <ng-template #login>

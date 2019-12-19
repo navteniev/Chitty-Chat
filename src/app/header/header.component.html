@@ -10,6 +10,7 @@
         </button>
         <mat-slide-toggle [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)">Dark theme</mat-slide-toggle>
         <mat-menu #menu="matMenu" color="black">
+          <button mat-button (click)="openProfile()">My Profile</button>
           <i class="material-icons button__logout" (click)="auth.signOut()">
             power_settings_new
           </i>
