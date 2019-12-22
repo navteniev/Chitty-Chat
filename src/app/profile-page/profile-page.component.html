@@ -1,0 +1,16 @@
+<h1 class="center">{{data.name}}</h1>
+
+<mat-dialog-content class="image"> 
+    <img src={{data.photoURL}} /> 
+</mat-dialog-content>
+
+<mat-dialog-content>
+        <p *ngIf = "data.status == 'off'" class="status offline">offline</p>
+        <p *ngIf = "data.status == 'on'" class="status online">online</p>        
+</mat-dialog-content>
+
+<mat-dialog-content>e-mail: {{data.email}}</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close class="center">Close</button>
+</mat-dialog-actions>
