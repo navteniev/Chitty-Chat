@@ -21,6 +21,10 @@ export interface User {
      */
     displayName?: string;
     /**
+     * stores users online status
+     */
+    status?: string;
+    /**
      * placeholder for data
      */
     myCustomData?: string;
