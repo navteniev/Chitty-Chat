@@ -35,7 +35,7 @@ export class ChatboxComponent implements OnInit, AfterViewChecked {
   @Input() userInfo: User;
   /** calls HostBinding() opened: boolean;
    */
-  opened = false;
+  opened = true;
 
   /** used to subscribe to chatroomlist for the get updateChatHistory function
    */
